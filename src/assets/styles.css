@@ -1,0 +1,101 @@
+body {
+  background: #5e5d5c22;
+}
+
+a:hover {
+  cursor: pointer;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.spinner-btn {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.btn {
+  min-height: 40px !important;
+}
+
+.max-w1550 {
+  max-width: 1550px !important;
+}
+
+.navbar {
+  background-color: #155fdf6d;
+}
+
+.search-bar {
+  max-width: 550px;
+}
+
+.main-wrapper {
+  overflow: auto;
+}
+
+:focus {
+  box-shadow: 0 0 0 0rem !important;
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+input[type='checkbox'] {
+  cursor: pointer;
+}
+
+input[type='radio'] {
+  cursor: pointer;
+}
+
+.modal-backdrop {
+  z-index: 11 !important;
+}
+
+.btn-check:focus + .btn-success,
+.btn-success:focus {
+  color: #fff;
+  background-color: #198754 !important;
+  border-color: #198754 !important;
+  box-shadow: 0 0 0 0px rgba(49, 131, 253, 0) !important;
+}
+
+.btn-update {
+  background-color: rgb(228, 123, 11);
+  color: #fff !important;
+}
+
+.btn-update:hover {
+  background-color: rgb(201, 109, 10);
+}
+
+.navbar-light .navbar-toggler {
+  border-color: rgb(255 255 255);
+}
+
+.bg-info {
+  background-color: #5bc0de !important;
+}
+
+@media (max-width: 650px) {
+  .auth-footer-wrapper {
+    flex-direction: column !important;
+  }
+}
