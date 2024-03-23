@@ -1,6 +1,6 @@
 <template>
   <div class="card shadow">
-    <div class="card-header border"><h5 class="m-0 p-2">Ενημέρωση παραγγελίας</h5></div>
+    <div class="card-header border"><h5 class="m-0 p-2">Ενημέρωση προιόντος</h5></div>
     <div class="card-body bg-white border">
       <form class="row g-3" @submit.prevent="updateProduct">
         <div class="col-md-6">

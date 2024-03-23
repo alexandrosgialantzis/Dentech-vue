@@ -1,5 +1,6 @@
 body {
   background: #5e5d5c22;
+  font-family: 'Source Sans Pro', 'Arial', sans-serif !important;
 }
 
 a:hover {
@@ -86,12 +87,16 @@ input[type='radio'] {
   background-color: rgb(201, 109, 10);
 }
 
+.bg-warning {
+  background-color: rgb(228, 123, 11) !important;
+}
+
 .navbar-light .navbar-toggler {
   border-color: rgb(255 255 255);
 }
 
-.bg-info {
-  background-color: #5bc0de !important;
+.bg-private-settings {
+  background: linear-gradient(#ffffff33, #bf41454f);
 }
 
 @media (max-width: 650px) {

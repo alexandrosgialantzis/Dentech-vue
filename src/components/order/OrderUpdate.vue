@@ -39,7 +39,7 @@
                 <div
                   v-for="(product, index) in products"
                   :key="index"
-                  class="form-check form-check-inline form-check me-2"
+                  class="form-check form-check-inline form-check me-4"
                 >
                   <input
                     class="form-check-input text-capitalize"
@@ -147,11 +147,8 @@ const getDoctors = async () => {
     const res = await userHttp.get<UsersResponse<User>>(`/get-users?searchString=${Roles.DENTIST}`)
     docs.value = res.data.users
   } catch (error) {
-    toast.showToast(
-      'Κάτι πήγε λάθος σχετικά με τους ιατρούς!',
-      ToastHeader.ERROR,
-      ToastConclusion.ERROR
-    )
+    const e = error as AxiosError<MessageResponse>
+    toast.showToast(e.response.data.message, ToastHeader.ERROR, ToastConclusion.ERROR)
   } finally {
     loading.value = false
   }

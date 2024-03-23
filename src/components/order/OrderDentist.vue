@@ -1,7 +1,7 @@
 <template>
   <div class="col-lg-4 p-2 mb-2">
     <span class="badge bg-primary fs-6 fw-normal p-2 w-100 mb-2"
-      >Οδοντίατρος<i class="fa-solid fa-stethoscope"></i
+      >Οδοντίατρος<i class="fa-solid fa-stethoscope ms-1"></i
     ></span>
     <div class="card shadow" v-if="dentist">
       <div class="card-body d-flex flex-wrap justify-content-between">

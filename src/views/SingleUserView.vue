@@ -2,7 +2,7 @@
   <spinner-component v-if="loading" :useMarginTop="true" />
   <div class="row" v-if="!loading && user">
     <div class="col-12">
-      <single-user-info :user="user" />
+      <user-info :user="user" />
       <change-role :roles="roles" @update-role="handleRoleChange" :loading="loadingChangeRole" />
     </div>
     <div class="col-12">
@@ -21,7 +21,7 @@ import { useToastStore } from '../stores/toastStore'
 import NotFoundEntity from '../components/NotFoundEntity.vue'
 import { orderHttp } from '../services/orderHttp'
 import ChangeRole from '../components/user/ChangeRole.vue'
-import SingleUserInfo from '../components/user/SingleUserInfo.vue'
+import UserInfo from '../components/user/UserInfo.vue'
 import { AxiosError } from 'axios'
 import SpinnerComponent from '../components/SpinnerComponent.vue'
 import SingleUserOrders from '../components/user/SingleUserOrders.vue'
@@ -112,4 +112,4 @@ const handleRoleChange = async (newRole: Roles) => {
 </style>
 ../components/SingleUserInfo.vue../components/SingleUserOrders.vue
 ../components/user/SingleUserInfo.vue../components/user/SingleUserOrders.vue
-../components/user/ChangeRole.vue
+../components/user/ChangeRole.vue ../components/user/UserInfo.vue

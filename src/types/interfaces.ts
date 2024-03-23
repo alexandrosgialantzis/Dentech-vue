@@ -110,3 +110,8 @@ export interface ProductPayload {
   name: string
   price: number
 }
+
+export interface PasswordPayload {
+  oldPassword: string
+  newPassword: string
+}

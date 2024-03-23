@@ -1,9 +1,9 @@
 <template>
-  <div class="w-100">
+  <div class="col-12">
     <span class="badge bg-primary fs-6 fw-normal p-2 w-100 mb-2"
       >Πληροφορίες <i class="fa-solid fa-info ms-1"></i
     ></span>
-    <div class="card border">
+    <div class="card border shadow">
       <div class="card-body text-secondary d-flex flex-wrap justify-content-between">
         <p class="mb-1 ms-1">
           Ονοματεπώνυμο:
@@ -47,10 +47,10 @@
 
 <script lang="ts" setup>
 import { defineProps } from 'vue'
-import { User } from '../../types/interfaces'
+import { CurrentUser, User } from '../../types/interfaces'
 import { Roles } from '../../types/enums'
 
 defineProps<{
-  user: User
+  user: User | CurrentUser
 }>()
 </script>
