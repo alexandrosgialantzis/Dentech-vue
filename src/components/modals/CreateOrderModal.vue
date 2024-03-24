@@ -21,7 +21,7 @@
         <div class="modal-body">
           <form
             class="row g-3"
-            v-if="!doctors.loading && docs?.length"
+            v-if="!doctors.loading && docs?.length && products?.length && !product.loading"
             @submit.prevent="createOrder"
           >
             <div class="col-md-4">
@@ -92,12 +92,21 @@
             </div>
             <p class="form-text mb-0"><span class="text-danger fs-6">*</span> Αναγκαία πεδία.</p>
           </form>
+          <p class="mb-0" v-else>
+            Προσθέστε προίοντα και οδοντιάτρους ώστε να δημιουργήσετε την πρώτη παραγγελία
+          </p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
             Κλείσιμο
           </button>
-          <button type="button" class="btn btn-success" @click="createOrder" :disabled="creating">
+          <button
+            type="button"
+            class="btn btn-success"
+            @click="createOrder"
+            :disabled="creating"
+            v-if="!doctors.loading && docs?.length && products?.length && !product.loading"
+          >
             <span v-if="!creating"
               >Δημιουργία παραγγελίας<i class="fa-solid fa-plus ms-1"></i
             ></span>

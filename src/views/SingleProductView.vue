@@ -40,8 +40,9 @@ const { deleteProduct } = useProduct()
 const product = ref<null | Product>(null)
 const loading = ref(false)
 const productId = ref('')
-const toast = useToastStore()
 const deleting = ref(false)
+
+const toast = useToastStore()
 
 onMounted(async () => {
   productId.value = route.params.id as string

@@ -69,7 +69,7 @@ onMounted(async () => {
   }
 
   if (user.role === Roles.DENTIST && order.value.dentist._id !== user.userId) {
-    router.push('/')
+    router.push('/not-found')
     return
   }
 

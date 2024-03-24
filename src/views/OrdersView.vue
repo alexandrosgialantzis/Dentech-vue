@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex justify-content-between align-items-center top-wrapper">
-    <div class="w-50 search-bar-wrapper">
+    <div class="w-50 search-bar-wrapper h-100 align-self-start">
       <search-component :placeholder="'Αναζήτηση παραγγελίας'" @search="searchOrders" />
     </div>
     <div class="mc-1 d-flex justify-content-start w-50 wmax-1200" v-if="user.role === Roles.ADMIN">
@@ -15,7 +15,7 @@
       <create-order-modal @create="createOrder" :creating="creating" />
     </div>
     <div class="input-group justify-content-end flex-column wmax-1200 mc-1 btn-filter-group">
-      <div class="d-grid">
+      <div class="d-inline-flex justify-content-end flex-wrap filter">
         <span class="d-flex align-items-center me-1">Ταξινόμηση βάση κατάστασης: </span>
         <div class="btn-group flex-wrap">
           <button
@@ -41,7 +41,7 @@
           </button>
         </div>
       </div>
-      <div>
+      <div class="d-inline-flex justify-content-end filter">
         <p class="mb-0">
           Ταξινόμηση βάση:
           <span class="badge bg-primary fs-6 fw-normal mt-1 p-2">{{
@@ -201,3 +201,11 @@ const handleOrders = (res: Order[]) => {
   }
 }
 </script>
+
+<style scoped>
+@media (max-width: 1500px) {
+  .filter {
+    justify-content: flex-start !important;
+  }
+}
+</style>

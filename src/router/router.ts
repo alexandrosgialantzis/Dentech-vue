@@ -10,10 +10,16 @@ import SingleOrderView from '../views/SingleOrderView.vue'
 import ProductsView from '../views/ProductsView.vue'
 import SingleUserView from '../views/SingleUserView.vue'
 import SingleProductView from '../views/SingleProductView.vue'
+import NotFoundView from '../views/NotFoundView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      component: NotFoundView
+    },
     {
       path: '/auth',
       name: 'auth',
@@ -84,24 +90,24 @@ router.beforeEach(async (to, from, next) => {
   }
 
   if (to.meta.requiresDentist && !(userStore.user.role === Roles.DENTIST)) {
-    next({ name: 'home' })
+    next({ name: 'not-found' })
   }
 
   if (
     to.meta.requiresAdminOrDentist &&
-    !(userStore.user.role === Roles.DENTIST || userStore.user.role === Roles.ADMIN)
+    (userStore.user.role === Roles.DENTIST || userStore.user.role === Roles.ADMIN)
   ) {
-    next({ name: 'home' })
+    next({ name: 'not-found' })
   }
 
   if (to.meta.requiresAuth && !userStore.isLoggedIn) {
-    next({ name: 'auth' })
+    next({ name: 'not-found' })
   }
   if (to.meta.requiresAdmin && userStore.user.role !== Roles.ADMIN) {
-    next({ name: 'home' })
+    next({ name: 'not-found' })
   }
   if (to.meta.requiresNotAuth && userStore.isLoggedIn) {
-    next({ name: 'home' })
+    next({ name: 'not-found' })
   }
 
   next()

@@ -39,7 +39,10 @@
         <span class="text-primary" v-else>--</span>
       </li>
     </ul>
-    <div class="d-flex align-items-center justify-content-center p-2 card-footer">
+    <div
+      class="d-flex align-items-center justify-content-center p-2 card-footer"
+      v-if="userStore.user.role === Roles.ADMIN"
+    >
       <router-link :to="`profile/${user?._id}`">Προφίλ</router-link>
     </div>
   </div>
@@ -49,10 +52,13 @@
 import { defineProps } from 'vue'
 import { User } from '../../types/interfaces'
 import { Roles } from '../../types/enums'
+import { useUserStore } from '../../stores/userStore'
 
 defineProps<{
   users: User[]
 }>()
+
+const userStore = useUserStore()
 </script>
 
 <style scoped>
