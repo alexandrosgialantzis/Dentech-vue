@@ -101,7 +101,7 @@ router.beforeEach(async (to, from, next) => {
   }
 
   if (to.meta.requiresAuth && !userStore.isLoggedIn) {
-    next({ name: 'not-found' })
+    next({ name: 'auth' })
   }
   if (to.meta.requiresAdmin && userStore.user.role !== Roles.ADMIN) {
     next({ name: 'not-found' })
