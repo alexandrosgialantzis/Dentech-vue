@@ -100,10 +100,6 @@ input[type='radio'] {
   background: linear-gradient(#ffffff33, #bf41454f);
 }
 
-.search-bar-wrapper {
-  min-width: 270px;
-}
-
 .mc-1 {
   margin-left: 10px;
 }
@@ -126,6 +122,15 @@ input[type='radio'] {
 @media (max-width: 650px) {
   .auth-footer-wrapper {
     flex-direction: column !important;
+  }
+
+  .search-bar-wrapper {
+    width: 100% !important;
+  }
+
+  .cp-btn {
+    margin-top: 10px;
+    margin-left: 0px !important;
   }
 }
 

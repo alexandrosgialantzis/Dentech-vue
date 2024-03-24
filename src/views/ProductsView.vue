@@ -1,9 +1,11 @@
 <template>
-  <div class="d-flex">
-    <search-component placeholder="Αναζητήστε προιόντα" @search="searchProducts" class="w-50" />
+  <div class="d-flex justify-content-between align-items-center top-wrapper">
+    <div class="w-50 search-bar-wrapper">
+      <search-component placeholder="Αναζητήστε προιόντα" @search="searchProducts" />
+    </div>
     <button
       type="button"
-      class="btn btn-outline-success ms-2"
+      class="btn btn-outline-success ms-2 cp-btn"
       data-bs-toggle="modal"
       data-bs-target="#exampleModal"
     >
