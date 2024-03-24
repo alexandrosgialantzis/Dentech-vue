@@ -3,7 +3,6 @@ import AuthView from '../views/AuthView.vue'
 import { useUserStore } from '../stores/userStore'
 import HomeView from '../views/HomeView.vue'
 import OrdersView from '../views/OrdersView.vue'
-import MyOrdersView from '../views/MyOrdersView.vue'
 import UsersView from '../views/UsersView.vue'
 import { Roles } from '../types/enums'
 import MyProfileView from '../views/MyProfileView.vue'
@@ -43,13 +42,13 @@ const router = createRouter({
       path: '/order/:id',
       name: 'order',
       component: SingleOrderView,
-      meta: { requiresAuth: true, requiresAdmin: true }
+      meta: { requiresAuth: true, requiresAdminOrDentist: true }
     },
     {
       path: '/my-orders',
       name: 'myOrders',
-      component: MyOrdersView,
-      meta: { requiresAuth: true }
+      component: OrdersView,
+      meta: { requiresAuth: true, requiresDentist: true }
     },
     {
       path: '/users',
@@ -82,6 +81,17 @@ router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore()
   if (!userStore.sessionChecked) {
     await userStore.validateSession()
+  }
+
+  if (to.meta.requiresDentist && !(userStore.user.role === Roles.DENTIST)) {
+    next({ name: 'home' })
+  }
+
+  if (
+    to.meta.requiresAdminOrDentist &&
+    !(userStore.user.role === Roles.DENTIST || userStore.user.role === Roles.ADMIN)
+  ) {
+    next({ name: 'home' })
   }
 
   if (to.meta.requiresAuth && !userStore.isLoggedIn) {

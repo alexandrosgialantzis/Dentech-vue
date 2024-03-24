@@ -1,6 +1,6 @@
 <template>
-  <spinner-component v-if="loading" />
-  <div class="accordion shadow" id="accordionExample" v-if="!loading && docs?.length">
+  <spinner-component v-if="doctors.loading" :use-margin-top="true" />
+  <div class="accordion shadow" id="accordionExample" v-if="!doctors.loading && docs?.length">
     <div class="accordion-item">
       <button
         class="accordion-button"
@@ -20,7 +20,11 @@
         data-bs-parent="#accordionExample"
       >
         <div class="accordion-body">
-          <form class="row g-3" v-if="!loading && docs?.length" @submit.prevent="updateOrder">
+          <form
+            class="row g-3"
+            v-if="!doctors.loading && docs?.length"
+            @submit.prevent="updateOrder"
+          >
             <div class="col-md-4">
               <label class="form-label">Ημ/νία παραλαβής:</label>
               <input type="text" class="form-control" v-model="takenDateToString" />
@@ -36,21 +40,19 @@
             <div class="col-12" v-if="products?.length">
               <label class="form-label">Προϊόντα:</label>
               <div class="w-100">
-                <div
-                  v-for="(product, index) in products"
-                  :key="index"
-                  class="form-check form-check-inline form-check me-4"
-                >
-                  <input
-                    class="form-check-input text-capitalize"
-                    type="checkbox"
-                    :value="product._id"
-                    :checked="isProductSelected(product._id)"
-                    @change="handleCheckboxChange($event, product._id)"
-                  />
-                  <label class="form-check-label text-capitalize">
-                    {{ product?.name }}
-                  </label>
+                <div class="radio-check-wrapper" v-for="(product, index) in products" :key="index">
+                  <div class="form-check form-check-inline form-check mb-0 mx-0">
+                    <input
+                      class="form-check-input text-capitalize"
+                      type="checkbox"
+                      :value="product._id"
+                      :checked="isProductSelected(product._id)"
+                      @change="handleCheckboxChange($event, product._id)"
+                    />
+                    <label class="form-check-label text-capitalize">
+                      {{ product?.name }}
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -60,16 +62,18 @@
             <div class="col-12">
               <label class="form-label">Οδοντίατροι:</label>
               <div class="w-100">
-                <div v-for="doc in docs" :key="doc?._id" class="form-check-inline form-check me-3">
-                  <input
-                    class="form-check-input"
-                    type="radio"
-                    :value="doc._id"
-                    v-model="selectedDoc"
-                  />
-                  <label class="form-check-label text-capitalize" :for="`doc-${doc?._id}`">
-                    {{ doc?.fullName }}
-                  </label>
+                <div class="radio-check-wrapper" v-for="doc in docs" :key="doc?._id">
+                  <div class="form-check-inline form-check mb-0 mx-0">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      :value="doc._id"
+                      v-model="selectedDoc"
+                    />
+                    <label class="form-check-label text-capitalize" :for="`doc-${doc?._id}`">
+                      {{ doc?.fullName }}
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -92,16 +96,8 @@
 
 <script setup lang="ts">
 import { defineProps, onMounted, ref, defineEmits } from 'vue'
-import {
-  MessageResponse,
-  Order,
-  OrderResponse,
-  Product,
-  User,
-  UsersResponse
-} from '../../types/interfaces'
-import { userHttp } from '../../services/userHttp'
-import { Roles, ToastConclusion, ToastHeader } from '../../types/enums'
+import { MessageResponse, Order, OrderResponse, Product, User } from '../../types/interfaces'
+import { ToastConclusion, ToastHeader } from '../../types/enums'
 import { useToastStore } from '../../stores/toastStore'
 import NotFoundEntity from './../NotFoundEntity.vue'
 import SpinnerComponent from './../SpinnerComponent.vue'
@@ -111,6 +107,7 @@ import { AxiosError } from 'axios'
 import ButtonContent from './../ButtonContent.vue'
 import { parseAndCheckNumber } from '../../utils/parseNumber'
 import { useProductStore } from '../../stores/productStore'
+import { useDoctorStore } from '../../stores/doctorStore'
 
 const { order, products } = defineProps<{
   products: Product[] | null
@@ -121,7 +118,6 @@ const localOrder = ref<null | Order>({ ...order })
 const sendDateToString = ref('')
 const takenDateToString = ref('')
 const docs = ref<null | User[]>(null)
-const loading = ref(false)
 const selectedProducts = ref(order.products.map((p) => p._id))
 const selectedDoc = ref(order?.dentist!?._id)
 const productsToAdd = ref([])
@@ -131,6 +127,7 @@ const paidToString = ref('')
 
 const toast = useToastStore()
 const product = useProductStore()
+const doctors = useDoctorStore()
 
 const emit = defineEmits(['order-updated'])
 
@@ -138,21 +135,11 @@ onMounted(async () => {
   sendDateToString.value = order.sendDate ? formattedDate(order.sendDate) : '--'
   takenDateToString.value = formattedDate(order.takenDate)
   paidToString.value = order.paid!?.toString() ?? '0'
-  await getDoctors()
-})
-
-const getDoctors = async () => {
-  loading.value = true
-  try {
-    const res = await userHttp.get<UsersResponse<User>>(`/get-users?searchString=${Roles.DENTIST}`)
-    docs.value = res.data.users
-  } catch (error) {
-    const e = error as AxiosError<MessageResponse>
-    toast.showToast(e.response.data.message, ToastHeader.ERROR, ToastConclusion.ERROR)
-  } finally {
-    loading.value = false
+  if (!doctors.isFetched) {
+    await doctors.fetchDoctors()
   }
-}
+  docs.value = doctors.getDocs
+})
 
 const isProductSelected = (id: string) => selectedProducts.value.includes(id)
 

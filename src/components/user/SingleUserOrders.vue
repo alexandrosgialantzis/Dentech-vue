@@ -6,7 +6,11 @@
     <not-found-entity v-if="!loading && !orders?.length" :message="'Δεν βρέθηκαν παραγγελίες'" />
     <div class="w-100" v-for="(order, index) in orders" :key="index">
       <div class="card shadow mb-2" v-if="!loading && orders?.length">
-        <div class="card-header">Παραγγελία {{ index + 1 }}.</div>
+        <div class="card-header">
+          <h5 class="mb-0">
+            Παραγγελία νούμερο <span class="text-primary">{{ order.numberOfOrder }}</span>
+          </h5>
+        </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
             <span class="me-1">Δημιουργήθηκε απο:</span>

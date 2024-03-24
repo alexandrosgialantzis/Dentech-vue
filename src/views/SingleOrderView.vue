@@ -8,10 +8,15 @@
     />
     <div class="row justify-content-between">
       <order-general :order="order" />
-      <order-dentist :dentist="order.dentist" />
-      <order-products :products="order.products" />
+      <order-dentist :dentist="order.dentist" :id="user.userId" />
+      <order-products :products="order.products" :role="user.role" />
     </div>
-    <order-update :order="order" :products="products" @order-updated="handleOrderUpdated" />
+    <order-update
+      :order="order"
+      :products="products"
+      @order-updated="handleOrderUpdated"
+      v-if="user.role === Roles.ADMIN"
+    />
   </div>
   <not-found-entity v-if="!loading && !order" :message="'Δεν βρέθηκε η παραγγελία'" />
 </template>
@@ -22,7 +27,7 @@ import { orderHttp } from '../services/orderHttp'
 import { Order, OrderResponse, Product } from '../types/interfaces'
 import { useRoute, useRouter } from 'vue-router'
 import { useToastStore } from '../stores/toastStore'
-import { ToastConclusion, ToastHeader } from '../types/enums'
+import { Roles, ToastConclusion, ToastHeader } from '../types/enums'
 import { useProductStore } from '../stores/productStore'
 import SpinnerComponent from '../components/SpinnerComponent.vue'
 import OrderGeneral from '../components/order/OrderGeneral.vue'
@@ -32,6 +37,7 @@ import OrderUpdate from '../components/order/OrderUpdate.vue'
 import NotFoundEntity from '../components/NotFoundEntity.vue'
 import DeleteComponent from '../components/DeleteComponent.vue'
 import { useOrder } from '../composables/useOrder'
+import { useUserStore } from '../stores/userStore'
 
 const orderId = ref('')
 const order = ref<null | Order>(null)
@@ -43,12 +49,14 @@ const route = useRoute()
 const router = useRouter()
 const toast = useToastStore()
 const product = useProductStore()
+
+const { user } = useUserStore()
 const { deleteOrder } = useOrder()
 
 onMounted(async () => {
   orderId.value = route.params.id as string
   await getSingleOrder(orderId.value)
-  if (!product.isFetched) {
+  if (!product.isFetched && user.role === Roles.ADMIN) {
     await product.fetchProducts()
 
     if (product.error) {
@@ -59,6 +67,12 @@ onMounted(async () => {
       )
     }
   }
+
+  if (user.role === Roles.DENTIST && order.value.dentist._id !== user.userId) {
+    router.push('/')
+    return
+  }
+
   products.value = product?.products
 })
 

@@ -31,7 +31,9 @@
         </p>
       </div>
       <div class="card-footer text-center `">
-        <router-link :to="`/profile/${dentist?._id}`"> Προφίλ </router-link>
+        <router-link :to="id === dentist?._id ? '/my-profile' : `/profile/${dentist?._id}`">
+          Προφίλ
+        </router-link>
       </div>
     </div>
     <div class="card shadow pb-3" v-else>
@@ -47,5 +49,6 @@ import NotFoundEntity from '../NotFoundEntity.vue'
 
 defineProps<{
   dentist: User
+  id: string
 }>()
 </script>

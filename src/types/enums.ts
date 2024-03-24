@@ -15,3 +15,8 @@ export enum Roles {
   DENTIST = 'Οδοντίατρος',
   UNCATEGORIZED = 'Απλώς χρήστης'
 }
+
+export enum OrderStatus {
+  SEND = 'Απεσταλμένη',
+  NOT_SEND = 'Μη απεσταλμένη'
+}

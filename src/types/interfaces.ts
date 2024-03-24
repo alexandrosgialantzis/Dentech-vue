@@ -1,4 +1,4 @@
-import { Roles } from './enums'
+import { OrderStatus, Roles } from './enums'
 
 export interface CurrentUser {
   userId: string | null
@@ -26,6 +26,13 @@ export interface UserState {
 
 export interface ProductState {
   products: Product[] | null
+  loading: boolean
+  isFetched: boolean
+  error: boolean
+}
+
+export interface DoctorState {
+  docs: User[] | null
   loading: boolean
   isFetched: boolean
   error: boolean
@@ -88,6 +95,8 @@ export interface Order {
   description: string
   products: Product[]
   updatedAt: Date
+  numberOfOrder: string
+  status: OrderStatus
 }
 
 export interface OrdersResponse<T> extends TotalCount {
@@ -114,4 +123,9 @@ export interface ProductPayload {
 export interface PasswordPayload {
   oldPassword: string
   newPassword: string
+}
+
+export interface GroupedOrdersResult {
+  groupedOrders: Record<string, Order[]>
+  sortedMonths: string[]
 }

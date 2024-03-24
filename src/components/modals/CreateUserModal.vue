@@ -76,9 +76,12 @@ import { Roles } from '../../types/enums'
 import { defineProps, defineEmits } from 'vue'
 import { UserPayload } from '../../types/interfaces'
 import ButtonContent from '../ButtonContent.vue'
+import { useDoctorStore } from '../../stores/doctorStore'
 
 defineProps<{ loading: boolean }>()
 const emit = defineEmits(['create'])
+
+const doctors = useDoctorStore()
 
 const fullName = ref('')
 const telephone = ref<null | number>(null)
@@ -106,6 +109,10 @@ const createUser = () => {
 
   if (cellPhone.value) {
     payload.cellPhone = cellPhone.value
+  }
+
+  if (role.value === Roles.DENTIST) {
+    doctors.isFetched = false
   }
 
   emit('create', payload)

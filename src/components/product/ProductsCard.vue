@@ -5,7 +5,7 @@
         <div class="card-header">Προιόν {{ i + 1 }}.</div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item">
-            Όνομα: <span class="text-primary">{{ product?.name }}</span>
+            Όνομα: <span class="text-primary text-capitalize">{{ product?.name }}</span>
           </li>
           <li class="list-group-item">
             Tιμή: <span class="text-primary">{{ product?.price.toFixed(2) }}€</span>

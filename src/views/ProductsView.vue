@@ -7,7 +7,7 @@
       data-bs-toggle="modal"
       data-bs-target="#exampleModal"
     >
-      Δημιουργεία προιόντος <i class="fa-solid fa-user-plus"></i>
+      Δημιουργεία προιόντος <i class="fa-solid fa-plus"></i>
     </button>
     <create-product-modal :loading="creating" @create="createProduct" />
   </div>
@@ -46,8 +46,10 @@ const toast = useToastStore()
 onMounted(async () => {
   if (!product.isFetched) {
     await product.fetchProducts()
+    products.value = product.getProducts.reverse()
+  } else {
+    products.value = product.getProducts
   }
-  products.value = product.products.reverse()
 })
 
 onBeforeUnmount(() => {

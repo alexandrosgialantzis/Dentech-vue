@@ -18,6 +18,7 @@ import { defineProps, ref } from 'vue'
 import { Roles, ToastConclusion, ToastHeader } from '../../types/enums'
 import { useToastStore } from '../../stores/toastStore'
 import ButtonContent from './../ButtonContent.vue'
+import { useDoctorStore } from '../../stores/doctorStore'
 
 defineProps<{
   roles: Roles[]
@@ -26,10 +27,15 @@ defineProps<{
 
 const selectedRole = ref('')
 const toast = useToastStore()
+const doctors = useDoctorStore()
+
 const emit = defineEmits(['update-role'])
 
 const emitUpdateRole = () => {
   if (selectedRole.value) {
+    if (selectedRole.value === Roles.DENTIST) {
+      doctors.isFetched = false
+    }
     emit('update-role', selectedRole.value)
   } else {
     toast.showToast('Επιλέξτε ρόλο!', ToastHeader.ATT, ToastConclusion.ATT)

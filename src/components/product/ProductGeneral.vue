@@ -10,7 +10,7 @@
       </p>
       <p class="m-1">
         <span class="me-1">Ονομα:</span>
-        <span class="text-primary">{{ product?.name }}</span>
+        <span class="text-primary text-capitalize">{{ product?.name }}</span>
       </p>
     </div>
   </div>

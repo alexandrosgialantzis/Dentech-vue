@@ -20,10 +20,13 @@
             `${products?.length < 2 ? 'w-100' : ''}`
           ]"
         >
-          <p class="mb-1 text-center">
+          <p :class="[role === Roles.ADMIN ? 'mb-1' : 'mb-0', 'text-center']">
             Ονομα: <span class="text-primary text-capitalize w-100">{{ prod?.name }}</span>
           </p>
-          <router-link :to="`/product/${prod?._id}`" class="text-center w-100 d-block"
+          <router-link
+            :to="`/product/${prod?._id}`"
+            class="text-center w-100 d-block"
+            v-if="role === Roles.ADMIN"
             >Δείτε το προιόν</router-link
           >
         </div>
@@ -37,9 +40,11 @@
 import { defineProps } from 'vue'
 import { Product } from '../../types/interfaces'
 import NotFoundEntity from '../NotFoundEntity.vue'
+import { Roles } from '../../types/enums'
 
 defineProps<{
   products: Product[]
+  role: Roles
 }>()
 </script>
 

@@ -7,7 +7,9 @@
       <div class="card-body d-flex flex-wrap justify-content-between">
         <h5 class="card-title mb-1 w-100">
           Παραγγελία νούμερο
-          <span class="text-primary">1</span>
+          <span class="text-primary">{{
+            order?.numberOfOrder ?? 'remember to fix this shit'
+          }}</span>
         </h5>
         <p class="m-1">
           <span class="me-1">Δημιουργήθηκε απο:</span>
@@ -47,10 +49,21 @@
             >{{ formattedDate(order?.updatedAt) }} <i class="fa-solid fa-calendar-days"></i
           ></span>
         </p>
-        <p class="mx-1 mt-2 mb-1 w-100">
-          <label class="w-100">Περιγραφή:</label>
-          <span class="me-1 fw-light fs-6">
-            {{ order?.description ?? 'Δεν υπάρχει περιγραφή' }}</span
+        <p class="m-1">
+          <span class="me-1">Kατάσταση:</span>
+          <span class="text-primary"
+            >{{ order?.status
+            }}<i
+              class="fa-solid fa-x ms-1 text-danger"
+              v-if="order.status === OrderStatus.NOT_SEND"
+            ></i>
+            <i class="fa-solid fa-check ms-1 text-success" v-else></i>
+          </span>
+        </p>
+        <p class="mx-1 mb-0 w-100">
+          <label>Περιγραφή: </label>
+          <span class="ms-1 fw-light fs-6">
+            {{ order?.description || 'Δεν υπάρχει περιγραφή' }}</span
           >
         </p>
       </div>
@@ -62,6 +75,7 @@
 import { defineProps } from 'vue'
 import { Order } from '../../types/interfaces'
 import { formattedDate } from '../../utils/date'
+import { OrderStatus } from '../../types/enums'
 
 defineProps<{ order: Order }>()
 </script>

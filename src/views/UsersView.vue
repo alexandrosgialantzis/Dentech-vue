@@ -14,19 +14,35 @@
       </button>
       <create-user-modal @create="createUser" :loading="creating" />
     </div>
-    <div class="input-group justify-content-end wmax-1200 mc-1">
+    <div class="input-group justify-content-end wmax-1200 mc-1 btn-filter-group">
       <span class="d-flex align-items-center me-1">Χρήστες βάση ρόλου : </span>
       <div class="btn-group flex-wrap">
-        <button class="btn btn-outline-secondary" @click="filterByRole('dentist')">
-          {{ Roles.DENTIST }} <i class="fa-solid fa-stethoscope"></i>
+        <button
+          :class="['btn', `btn${selectedRole === 'dentist' ? '' : '-outline'}-secondary`]"
+          @click="filterByRole('dentist')"
+          :disabled="selectedRole === 'dentist'"
+        >
+          Οδοντίατροι <i class="fa-solid fa-stethoscope"></i>
         </button>
-        <button class="btn btn-outline-secondary" @click="filterByRole('user')">
-          {{ Roles.UNCATEGORIZED }} <i class="fa-solid fa-user ms-1"></i>
+        <button
+          :class="['btn', `btn${selectedRole === 'user' ? '' : '-outline'}-secondary`]"
+          @click="filterByRole('user')"
+          :disabled="selectedRole === 'user'"
+        >
+          Απλοί χρήστες <i class="fa-solid fa-user ms-1"></i>
         </button>
-        <button class="btn btn-outline-secondary" @click="filterByRole('admin')">
+        <button
+          :class="['btn', `btn${selectedRole === 'admin' ? '' : '-outline'}-secondary`]"
+          @click="filterByRole('admin')"
+          :disabled="selectedRole === 'admin'"
+        >
           Διαχειριστές <i class="fa-solid fa-crown ms-1"></i>
         </button>
-        <button class="btn btn-outline-secondary" @click="filterByRole('')">
+        <button
+          :class="['btn', `btn${!selectedRole ? '' : '-outline'}-secondary`]"
+          @click="filterByRole('')"
+          :disabled="!selectedRole"
+        >
           Όλοι <i class="fa-solid fa-users ms-1"></i>
         </button>
       </div>
@@ -59,7 +75,7 @@ import {
 } from '../types/interfaces'
 import SpinnerComponent from '../components/SpinnerComponent.vue'
 import { useToastStore } from '../stores/toastStore'
-import { Roles, ToastConclusion, ToastHeader } from '../types/enums'
+import { ToastConclusion, ToastHeader } from '../types/enums'
 import TotalCount from '../components/TotalCount.vue'
 import UsersCard from '../components/user/UsersCard.vue'
 import NotFoundEntity from '../components/NotFoundEntity.vue'
@@ -81,6 +97,7 @@ onBeforeUnmount(() => {
 const users = ref<null | User[]>(null)
 const loading = ref(false)
 const creating = ref(false)
+const selectedRole = ref('')
 
 const toast = useToastStore()
 
@@ -102,6 +119,7 @@ const search = async (search: string) => {
 }
 
 const filterByRole = async (role: string) => {
+  selectedRole.value = role
   await getUsers(role)
 }
 
@@ -129,32 +147,5 @@ const createUser = async (user: UserPayload) => {
 .user-list {
   overflow-y: auto;
   max-height: 800px;
-}
-
-.mc-1 {
-  margin-left: 10px;
-}
-
-@media (max-width: 1500px) {
-  .top-wrapper {
-    flex-wrap: wrap;
-  }
-
-  .input-group {
-    justify-content: start !important;
-  }
-
-  .wmax-1200 {
-    width: 100% !important;
-  }
-
-  .mc-1 {
-    margin-top: 10px !important;
-    margin-left: 0px;
-  }
-}
-
-.search-bar-wrapper {
-  min-width: 270px;
 }
 </style>
