@@ -104,6 +104,10 @@ input[type='radio'] {
   margin-left: 10px;
 }
 
+.modal {
+  z-index: 12 !important;
+}
+
 .radio-check-wrapper {
   display: inline-block;
   padding: 5px 10px;

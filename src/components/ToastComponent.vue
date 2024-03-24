@@ -21,7 +21,7 @@ const toast = useToastStore()
 
 <style>
 .toast-wrapper {
-  z-index: 12;
+  z-index: 14;
   display: block !important;
 }
 
