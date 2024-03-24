@@ -68,11 +68,6 @@ onMounted(async () => {
     }
   }
 
-  if (user.role === Roles.DENTIST && order.value.dentist._id !== user.userId) {
-    router.push('/not-found')
-    return
-  }
-
   products.value = product?.products
 })
 
@@ -83,6 +78,7 @@ const getSingleOrder = async (id: string) => {
     order.value = res.data.order
   } catch (e) {
     toast.showToast('Δεν βρέθηκε η παραγγελία!', ToastHeader.ERROR, ToastConclusion.ERROR)
+    router.push('/not-found')
   } finally {
     loading.value = false
   }

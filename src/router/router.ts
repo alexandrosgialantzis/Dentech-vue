@@ -95,7 +95,7 @@ router.beforeEach(async (to, from, next) => {
 
   if (
     to.meta.requiresAdminOrDentist &&
-    (userStore.user.role === Roles.DENTIST || userStore.user.role === Roles.ADMIN)
+    !(userStore.user.role === Roles.DENTIST || userStore.user.role === Roles.ADMIN)
   ) {
     next({ name: 'not-found' })
   }

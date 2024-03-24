@@ -3,15 +3,18 @@
     <div class="w-50 search-bar-wrapper h-100 align-self-start">
       <search-component :placeholder="'Αναζήτηση παραγγελίας'" @search="searchOrders" />
     </div>
-    <div class="mc-1 d-flex justify-content-start w-50 wmax-1200" v-if="user.role === Roles.ADMIN">
-      <button
+    <div
+      class="mc-1 d-flex justify-content-start w-50 wmax-1200 h-100 align-self-start"
+      v-if="user.role === Roles.ADMIN"
+    >
+      <buttons
         type="button"
-        class="btn btn-outline-success"
+        class="btn btn-outline-success d-flex align-items-center"
         data-bs-toggle="modal"
         data-bs-target="#exampleModal"
       >
-        Δημιουργεία παραγγελίας <i class="fa-solid fa-plus"></i>
-      </button>
+        Δημιουργεία παραγγελίας <i class="fa-solid fa-plus ms-1"></i>
+      </buttons>
       <create-order-modal @create="createOrder" :creating="creating" />
     </div>
     <div class="input-group justify-content-end flex-column wmax-1200 mc-1 btn-filter-group">
@@ -45,7 +48,7 @@
         <p class="mb-0">
           Ταξινόμηση βάση:
           <span class="badge bg-primary fs-6 fw-normal mt-1 p-2">{{
-            !status ? OrderStatus.NOT_SEND : status
+            !status ? OrderStatus.SEND : status
           }}</span>
         </p>
       </div>
@@ -81,6 +84,21 @@ import NotFoundEntity from '../components/NotFoundEntity.vue'
 import CreateOrderModal from '../components/modals/CreateOrderModal.vue'
 import { AxiosError } from 'axios'
 import { useUserStore } from '../stores/userStore'
+
+const monthNamesToNumbers: Record<string, number> = {
+  Ιανουαρίου: 1,
+  Φεβρουαρίου: 2,
+  Μαρτίου: 3,
+  Απριλίου: 4,
+  Μαΐου: 5,
+  Ιουνίου: 6,
+  Ιουλίου: 7,
+  Αυγούστου: 8,
+  Σεπτεμβρίου: 9,
+  Οκτωβρίου: 10,
+  Νοεμβρίου: 11,
+  Δεκεμβρίου: 12
+}
 
 const loading = ref(false)
 const orders = ref<null | GroupedOrdersResult>(null)
@@ -125,10 +143,9 @@ const getOrders = async () => {
 }
 
 const groupOrdersByMonth = (orders: Order[]): GroupedOrdersResult => {
-  const grouped = orders.reduce(
+  const grouped = orders.reduce<GroupedOrdersResult>(
     (acc, order) => {
-      const statusBased =
-        status.value === OrderStatus.SEND && status.value ? order.sendDate : order.takenDate
+      const statusBased = order.status === OrderStatus.SEND ? order.sendDate : order.takenDate
       const date = new Date(statusBased)
       const monthYear = `${date.toLocaleString('el-GR', { month: 'long' })} ${date.getFullYear()}`
 
@@ -141,20 +158,19 @@ const groupOrdersByMonth = (orders: Order[]): GroupedOrdersResult => {
 
       return acc
     },
-    { groupedOrders: {} as Record<string, Order[]>, sortedMonths: [] as string[] }
+    { groupedOrders: {}, sortedMonths: [] }
   )
 
-  grouped.sortedMonths
-    .sort((a, b) => {
-      const getYearMonth = (str: string) => {
-        const [monthName, year] = str.split(' ')
-        const month = new Date(`${monthName} 1 ${year}`).getMonth()
-        return new Date(Number(year), month).getTime()
-      }
+  grouped.sortedMonths.sort((a, b) => {
+    const [monthA, yearA] = a.split(' ')
+    const [monthB, yearB] = b.split(' ')
+    const numericMonthA = monthNamesToNumbers[monthA]
+    const numericMonthB = monthNamesToNumbers[monthB]
+    const dateA = new Date(parseInt(yearA), numericMonthA - 1)
+    const dateB = new Date(parseInt(yearB), numericMonthB - 1)
 
-      return getYearMonth(b) - getYearMonth(a)
-    })
-    .reverse()
+    return dateB.getTime() - dateA.getTime()
+  })
 
   return grouped
 }
