@@ -3,6 +3,18 @@
     <div class="alert alert-primary text-center">
       <h5 class="mb-0">{{ month }}</h5>
     </div>
+    <total-count
+      :content="`Παραγγελιες ${month}`"
+      :length="orders?.groupedOrders[month].length"
+      :entity="'παραγγελιες'"
+      class="mb-3"
+    />
+    <total-count
+      :content="`Συνολικό εξοφλημένο πόσο`"
+      :length="getPaidByMonth(month).value"
+      :entity="'€'"
+      class="mb-3"
+    />
     <div class="row">
       <div class="col-lg-4 pb-3" v-for="order in orders?.groupedOrders[month]" :key="order._id">
         <div class="card shadow">
@@ -103,14 +115,29 @@
 
 <script lang="ts" setup>
 import { GroupedOrdersResult } from '../../types/interfaces'
-import { defineProps } from 'vue'
+import { computed, defineProps } from 'vue'
 import { formattedDate } from '../../utils/date'
 import { OrderStatus, Roles } from '../../types/enums'
+import TotalCount from '../../components/TotalCount.vue'
 
-defineProps<{
+const props = defineProps<{
   orders: GroupedOrdersResult
   role: Roles
 }>()
+
+const getPaidByMonth = (month: string) => {
+  return computed(() => {
+    let sum: number = 0
+    const monthOrders = props.orders.groupedOrders[month]
+    if (!monthOrders) {
+      return sum
+    }
+    for (const ord of monthOrders) {
+      sum += ord.paid
+    }
+    return sum
+  })
+}
 </script>
 
 <style scoped>

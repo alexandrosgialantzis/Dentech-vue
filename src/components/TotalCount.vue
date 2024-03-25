@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex flex-row flex-wrap justify-content-start align-items-center">
-    Σύνολο:
+    {{ content ?? 'Συνολο' }}:
     <span class="badge bg-success fs-6 fw-normal ms-1 p-2">{{ length }} {{ entity }}</span>
   </div>
 </template>
@@ -9,5 +9,6 @@
 const { length, entity } = defineProps<{
   length: number
   entity: string
+  content?: string
 }>()
 </script>
