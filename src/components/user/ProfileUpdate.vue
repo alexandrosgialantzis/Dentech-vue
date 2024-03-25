@@ -1,6 +1,6 @@
 <template>
   <div class="col-md-5 mt-4">
-    <span class="badge bg-primary fs-6 fw-normal p-2 w-100 mb-2"
+    <span class="badge bg-warning fs-6 fw-normal p-2 w-100 mb-2"
       >Ενημέρωση πληροφοριών προφίλ <i class="fa-solid fa-arrow-rotate-right"></i
     ></span>
     <div class="card border shadow">

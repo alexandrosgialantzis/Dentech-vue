@@ -1,23 +1,27 @@
 <template>
-  <div class="card shadow">
-    <div class="card-header border"><h5 class="m-0 p-2">Ενημέρωση προιόντος</h5></div>
-    <div class="card-body bg-white border">
-      <form class="row g-3" @submit.prevent="updateProduct">
-        <div class="col-md-6">
-          <label class="form-label">Ονομα:</label>
-          <input type="text" class="form-control" v-model="prod.name" />
-        </div>
-        <div class="col-md-6">
-          <label class="form-label">Τιμή:</label>
-          <input type="text" class="form-control" v-model="prod.price" />
-        </div>
-        <div class="col-12">
-          <button type="submit" class="btn btn-update" :disabled="updating">
-            <button-content v-if="updating" />
-            <span v-else>Ενημέρωση<i class="fa-solid fa-pencil ms-1"></i></span>
-          </button>
-        </div>
-      </form>
+  <div class="col-12 mb-2">
+    <span class="badge bg-warning fs-6 fw-normal p-2 w-100 mb-2"
+      >Ενημέρωση προιόντος<i class="fa-solid fa-arrow-rotate-right ms-1"></i
+    ></span>
+    <div class="card shadow">
+      <div class="card-body bg-white border">
+        <form class="row g-3" @submit.prevent="updateProduct">
+          <div class="col-md-6">
+            <label class="form-label">Ονομα:</label>
+            <input type="text" class="form-control" v-model="prod.name" />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Τιμή:</label>
+            <input type="text" class="form-control" v-model="prod.price" />
+          </div>
+          <div class="col-12">
+            <button type="submit" class="btn btn-update" :disabled="updating">
+              <button-content v-if="updating" />
+              <span v-else>Ενημέρωση<i class="fa-solid fa-pencil ms-1"></i></span>
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </template>

@@ -12,38 +12,39 @@
           </h5>
         </div>
         <ul class="list-group list-group-flush">
-          <li class="list-group-item">
-            <span class="me-1">Δημιουργήθηκε απο:</span>
-            <span class="text-primary text-capitalize" v-if="order.createdBy"
-              >{{ order?.createdBy.fullName }} <i class="fa-solid fa-user"></i
+          <li class="list-group-item text-muted">
+            Δημιουργήθηκε απο:
+            <span class="text-dark text-capitalize" v-if="order.createdBy"
+              >{{ order?.createdBy.fullName }} <i class="fa-solid fa-user text-primary"></i
             ></span>
             <span class="badge bg-danger fs-6 fw-normal" v-else>Δεν βρέθηκε χρήστης</span>
           </li>
           <div class="card-body d-flex flex-wrap justify-content-between px-3 pt-2 pb-1">
-            <p class="mb-1 ms-1">
-              <span class="me-1">Ημ/νία παραλαβής:</span>
-              <span class="text-primary"
-                >{{ formattedDate(order?.takenDate) }} <i class="fa-solid fa-calendar-days"></i
+            <p class="mb-1 ms-1 text-muted">
+              Ημ/νία παραλαβής:
+              <span class="text-dark"
+                >{{ formattedDate(order?.takenDate) }}
+                <i class="fa-solid fa-calendar-days text-primary"></i
               ></span>
             </p>
-            <p class="mb-1 ms-1">
-              <span class="me-1"> Ημ/νία αποστολής:</span>
-              <span class="text-primary"
+            <p class="mb-1 ms-1 text-muted">
+              Ημ/νία αποστολής:
+              <span class="text-dark"
                 >{{ formattedDate(order?.sendDate) }}
-                <i class="fa-solid fa-calendar-days" v-if="order?.sendDate"></i
+                <i class="fa-solid fa-calendar-days text-primary" v-if="order?.sendDate"></i
               ></span>
             </p>
-            <p class="mb-1 ms-1">
-              <span class="me-1"> Συνολικό κόστος:</span>
-              <span class="text-primary">{{ order.totalCost.toFixed(2) }}€</span>
+            <p class="mb-1 ms-1 text-muted">
+              Συνολικό κόστος:
+              <span class="text-dark">{{ order.totalCost.toFixed(2) }}€</span>
             </p>
-            <p class="mb-1 ms-1">
-              <span class="me-1"> Εξοφλημένο:</span>
-              <span class="text-primary me-3">{{ order.paid.toFixed(2) }}€</span>
+            <p class="mb-1 ms-1 text-muted">
+              Εξοφλημένο:
+              <span class="text-dark me-3">{{ order.paid.toFixed(2) }}€</span>
             </p>
-            <p class="mb-0 ms-1">
-              <span class="me-1"> Μη εξοφλημένο:</span>
-              <span class="text-primary">{{ order.unPaid.toFixed(2) }}€</span>
+            <p class="mb-0 ms-1 text-muted">
+              Μη εξοφλημένο:
+              <span class="text-dark">{{ order.unPaid.toFixed(2) }}€</span>
             </p>
           </div>
         </ul>

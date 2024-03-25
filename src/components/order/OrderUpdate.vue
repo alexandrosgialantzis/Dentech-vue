@@ -1,94 +1,75 @@
 <template>
   <spinner-component v-if="doctors.loading" :use-margin-top="true" />
-  <div class="accordion shadow" id="accordionExample" v-if="!doctors.loading && docs?.length">
-    <div class="accordion-item">
-      <button
-        class="accordion-button"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#collapseOne"
-        aria-expanded="false"
-        aria-controls="collapseOne"
-      >
-        <h5 class="mb-0">Ενημέρωση παραγγελίας</h5>
-      </button>
-
-      <div
-        id="collapseOne"
-        class="accordion-collapse collapse show"
-        aria-labelledby="headingOne"
-        data-bs-parent="#accordionExample"
-      >
-        <div class="accordion-body">
-          <form
-            class="row g-3"
-            v-if="!doctors.loading && docs?.length"
-            @submit.prevent="updateOrder"
-          >
-            <div class="col-md-4">
-              <label class="form-label">Ημ/νία παραλαβής:</label>
-              <input type="text" class="form-control" v-model="takenDateToString" />
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Ημ/νία αποστολής:</label>
-              <input type="text" class="form-control" v-model="sendDateToString" />
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Εξοφλημένο ποσό</label>
-              <input type="text" class="form-control" v-model="localOrder.paid" />
-            </div>
-            <div class="col-12" v-if="products?.length">
-              <label class="form-label">Προϊόντα:</label>
-              <div class="w-100">
-                <div class="radio-check-wrapper" v-for="(product, index) in products" :key="index">
-                  <div class="form-check form-check-inline form-check mb-0 mx-0">
-                    <input
-                      class="form-check-input text-capitalize"
-                      type="checkbox"
-                      :value="product._id"
-                      :checked="isProductSelected(product._id)"
-                      @change="handleCheckboxChange($event, product._id)"
-                    />
-                    <label class="form-check-label text-capitalize">
-                      {{ product?.name }}
-                    </label>
-                  </div>
+  <div class="col-12 p-2 mb-2">
+    <span class="badge bg-warning fs-6 fw-normal p-2 w-100 mb-2"
+      >Ενημέρωση παραγγελίας<i class="fa-solid fa-arrow-rotate-right ms-1"></i
+    ></span>
+    <div class="card shadow">
+      <div class="card-body d-flex flex-wrap justify-content-between">
+        <form class="row g-3" v-if="!doctors.loading && docs?.length" @submit.prevent="updateOrder">
+          <div class="col-md-4">
+            <label class="form-label">Ημ/νία παραλαβής:</label>
+            <input type="text" class="form-control" v-model="takenDateToString" />
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Ημ/νία αποστολής:</label>
+            <input type="text" class="form-control" v-model="sendDateToString" />
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Εξοφλημένο ποσό</label>
+            <input type="text" class="form-control" v-model="localOrder.paid" />
+          </div>
+          <div class="col-12" v-if="products?.length">
+            <label class="form-label">Προϊόντα:</label>
+            <div class="w-100">
+              <div class="radio-check-wrapper" v-for="(product, index) in products" :key="index">
+                <div class="form-check form-check-inline form-check mb-0 mx-0">
+                  <input
+                    class="form-check-input text-capitalize"
+                    type="checkbox"
+                    :value="product._id"
+                    :checked="isProductSelected(product._id)"
+                    @change="handleCheckboxChange($event, product._id)"
+                  />
+                  <label class="form-check-label text-capitalize">
+                    {{ product?.name }}
+                  </label>
                 </div>
               </div>
             </div>
-            <div class="col-12" v-if="!products?.length">
-              <not-found-entity :message="'Δεν βρέθηκαν προιόντα'" />
-            </div>
-            <div class="col-12">
-              <label class="form-label">Οδοντίατροι:</label>
-              <div class="w-100">
-                <div class="radio-check-wrapper" v-for="doc in docs" :key="doc?._id">
-                  <div class="form-check-inline form-check mb-0 mx-0">
-                    <input
-                      class="form-check-input"
-                      type="radio"
-                      :value="doc._id"
-                      v-model="selectedDoc"
-                    />
-                    <label class="form-check-label text-capitalize" :for="`doc-${doc?._id}`">
-                      {{ doc?.fullName }}
-                    </label>
-                  </div>
+          </div>
+          <div class="col-12" v-if="!products?.length">
+            <not-found-entity :message="'Δεν βρέθηκαν προιόντα'" />
+          </div>
+          <div class="col-12">
+            <label class="form-label">Οδοντίατροι:</label>
+            <div class="w-100">
+              <div class="radio-check-wrapper" v-for="doc in docs" :key="doc?._id">
+                <div class="form-check-inline form-check mb-0 mx-0">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    :value="doc._id"
+                    v-model="selectedDoc"
+                  />
+                  <label class="form-check-label text-capitalize" :for="`doc-${doc?._id}`">
+                    {{ doc?.fullName }}
+                  </label>
                 </div>
               </div>
             </div>
-            <div class="col-12">
-              <label class="form-label">Περιγραφή</label>
-              <textarea class="form-control" rows="3" v-model="localOrder.description"></textarea>
-            </div>
-            <div class="col-12">
-              <button type="submit" class="btn btn-update" :disabled="updating">
-                <button-content v-if="updating" />
-                <span v-else>Ενημέρωση<i class="fa-solid fa-pencil ms-1"></i></span>
-              </button>
-            </div>
-          </form>
-        </div>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Περιγραφή</label>
+            <textarea class="form-control" rows="3" v-model="localOrder.description"></textarea>
+          </div>
+          <div class="col-12">
+            <button type="submit" class="btn btn-update" :disabled="updating">
+              <button-content v-if="updating" />
+              <span v-else>Ενημέρωση<i class="fa-solid fa-pencil ms-1"></i></span>
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

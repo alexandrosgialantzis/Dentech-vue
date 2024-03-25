@@ -4,15 +4,15 @@
       <div class="card shadow">
         <div class="card-header">Προιόν {{ i + 1 }}.</div>
         <ul class="list-group list-group-flush">
-          <li class="list-group-item">
-            Όνομα: <span class="text-primary text-capitalize">{{ product?.name }}</span>
+          <li class="list-group-item text-muted">
+            Όνομα: <span class="text-dark text-capitalize">{{ product?.name }}</span>
           </li>
-          <li class="list-group-item">
-            Tιμή: <span class="text-primary">{{ product?.price.toFixed(2) }}€</span>
+          <li class="list-group-item text-muted">
+            Tιμή: <span class="text-dark">{{ product?.price.toFixed(2) }}€</span>
           </li>
-          <li class="list-group-item">
+          <li class="list-group-item text-muted">
             Σύνολο παραγγελίων:
-            <span class="text-primary">{{ product?.orders?.length }}</span>
+            <span class="text-dark">{{ product?.orders?.length }}</span>
           </li>
         </ul>
         <div class="card-footer">

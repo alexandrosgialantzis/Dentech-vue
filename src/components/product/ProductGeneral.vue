@@ -4,13 +4,13 @@
   ></span>
   <div class="card shadow mb-2">
     <div class="card-body d-flex flex-wrap justify-content-between">
-      <p class="m-1">
-        <span class="me-1">Tιμή:</span>
-        <span class="text-primary">{{ product?.price }}€</span>
+      <p class="m-1 text-muted">
+        Tιμή:
+        <span class="text-dark">{{ product?.price }}€</span>
       </p>
-      <p class="m-1">
-        <span class="me-1">Ονομα:</span>
-        <span class="text-primary text-capitalize">{{ product?.name }}</span>
+      <p class="m-1 text-muted">
+        Ονομα:
+        <span class="text-dark text-capitalize">{{ product?.name }}</span>
       </p>
     </div>
   </div>
@@ -19,20 +19,21 @@
   ></span>
   <div class="card shadow" v-if="product?.createdBy">
     <div class="card-body d-flex flex-wrap justify-content-between">
-      <p class="m-1">
-        <span class="me-1">Ον/Επ:</span>
-        <span class="text-primary text-capitalize">{{ product?.createdBy?.fullName }}</span>
+      <p class="m-1 text-muted">
+        Ον/Επ:
+        <span class="text-dark text-capitalize">{{ product?.createdBy?.fullName }}</span>
       </p>
-      <p class="m-1">
-        <span class="me-1">Ε-mail:</span>
-        <span class="text-primary"
-          >{{ product?.createdBy?.email }} <i class="fa-solid fa-envelope"></i
+      <p class="m-1 text-muted">
+        Ε-mail:
+        <span class="text-dark"
+          >{{ product?.createdBy?.email }} <i class="fa-solid fa-envelope text-primary"></i
         ></span>
       </p>
-      <p class="m-1">
-        <span class="me-1">Κινητό τηλέφωνο:</span>
-        <span class="text-primary" v-if="product?.createdBy?.cellPhone"
-          >{{ product?.createdBy?.cellPhone }} <i class="fa-solid fa-mobile-screen-button"></i
+      <p class="m-1 text-muted">
+        Κινητό τηλέφωνο:
+        <span class="text-dark" v-if="product?.createdBy?.cellPhone"
+          >{{ product?.createdBy?.cellPhone }}
+          <i class="fa-solid fa-mobile-screen-button text-primary"></i
         ></span>
         <span class="text-primary" v-else>--</span>
       </p>

@@ -39,7 +39,7 @@
             Κλείσιμο
           </button>
           <button type="button" class="btn btn-success" @click="createProduct" :disabled="loading">
-            <span v-if="!loading">Δημιουργία χρήστη<i class="fa-solid fa-plus ms-1"></i></span>
+            <span v-if="!loading">Δημιουργία προιόντος<i class="fa-solid fa-plus ms-1"></i></span>
             <button-content v-else />
           </button>
         </div>

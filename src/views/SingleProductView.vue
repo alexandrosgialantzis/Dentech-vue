@@ -32,9 +32,11 @@ import ProductOrders from '../components/product/ProductOrders.vue'
 import DeleteComponent from '../components/DeleteComponent.vue'
 import { useProduct } from '../composables/useProduct'
 import ProductUpdate from '../components/product/ProductUpdate.vue'
+import { useProductStore } from '../stores/productStore'
 
 const route = useRoute()
 const router = useRouter()
+
 const { deleteProduct } = useProduct()
 
 const product = ref<null | Product>(null)
@@ -43,6 +45,7 @@ const productId = ref('')
 const deleting = ref(false)
 
 const toast = useToastStore()
+const productStore = useProductStore()
 
 onMounted(async () => {
   productId.value = route.params.id as string
@@ -68,6 +71,7 @@ const handleDelete = async () => {
   try {
     await deleteProduct(productId.value)
     router.push('/products')
+    productStore.isFetched = false
   } catch (error) {
     console.error('Κάτι πήγε λάθος σχετικά με τη διαγραφή')
   } finally {

@@ -5,29 +5,30 @@
     ></span>
     <div class="card shadow" v-if="dentist">
       <div class="card-body d-flex flex-wrap justify-content-between">
-        <p class="m-1">
-          <span class="me-1"> Oν/Επ:</span>
-          <span class="text-primary">{{ dentist?.fullName }} </span>
+        <p class="m-1 text-muted">
+          Oν/Επ:
+          <span class="text-dark">{{ dentist?.fullName }} </span>
         </p>
-        <p class="m-1">
-          <span class="me-1"> E-mail:</span>
-          <span class="text-primary"
-            >{{ dentist?.email }}<i class="fa-solid fa-envelope ms-1"></i
+        <p class="m-1 text-muted">
+          E-mail:
+          <span class="text-dark"
+            >{{ dentist?.email }}<i class="fa-solid fa-envelope ms-1 text-primary"></i
           ></span>
         </p>
-        <p class="m-1">
-          <span class="me-1"> Κινητό τηλέφωνο:</span>
-          <span class="text-primary" v-if="dentist?.cellPhone"
-            >{{ dentist?.telephone }} <i class="fa-solid fa-mobile-screen-button ms-1"></i
+        <p class="m-1 text-muted">
+          Κινητό τηλέφωνο:
+          <span class="text-dark" v-if="dentist?.cellPhone"
+            >{{ dentist?.telephone }}
+            <i class="fa-solid fa-mobile-screen-button ms-1 text-primary"></i
           ></span>
-          <span class="text-primary" v-else>--</span>
+          <span class="text-dark" v-else>--</span>
         </p>
-        <p class="mb-0 mx-1 mt-1">
-          <span class="me-1"> Σταθερό τηλέφωνο:</span>
-          <span class="text-primary" v-if="dentist?.telephone"
-            >{{ dentist?.telephone }} <i class="fa-solid fa-phone ms-1"></i
+        <p class="mb-0 mx-1 mt-1 text-muted">
+          Σταθερό τηλέφωνο:
+          <span class="text-dark" v-if="dentist?.telephone"
+            >{{ dentist?.telephone }} <i class="fa-solid fa-phone ms-1 text-primary"></i
           ></span>
-          <span class="text-primary" v-else>--</span>
+          <span class="text-dark" v-else>--</span>
         </p>
       </div>
       <div class="card-footer text-center `">

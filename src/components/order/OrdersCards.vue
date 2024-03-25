@@ -13,64 +13,81 @@
           </div>
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
-              Ημερομηνία παραλαβής:
-              <span class="text-primary ms-1"
-                >{{ formattedDate(order.takenDate) }} <i class="fa-solid fa-calendar-days"></i
-              ></span>
+              <p class="text-muted mb-0">
+                Ημερομηνία παραλαβής:
+                <span class="text-dark ms-1">
+                  {{ formattedDate(order.takenDate) }}
+                  <i class="fa-solid fa-calendar-days text-primary"></i>
+                </span>
+              </p>
             </li>
             <li class="list-group-item">
-              Ημερομηνία αποστολής:
-              <span class="text-primary ms-1"
-                >{{ formattedDate(order.sendDate) }}
-                <i class="fa-solid fa-calendar-days" v-if="order?.sendDate"></i
-              ></span>
+              <p class="text-muted mb-0">
+                Ημερομηνία αποστολής:
+                <span class="text-dark ms-1"
+                  >{{ formattedDate(order.sendDate) }}
+                  <i class="fa-solid fa-calendar-days text-primary" v-if="order?.sendDate"></i
+                ></span>
+              </p>
             </li>
             <li class="list-group-item">
-              Συνολικό κόστος:
-              <span class="text-primary ms-1">{{ order?.totalCost.toFixed(2) }}€</span>
+              <p class="text-muted mb-0">
+                Συνολικό κόστος:
+                <span class="text-dark ms-1">{{ order?.totalCost.toFixed(2) }}€</span>
+              </p>
             </li>
             <li class="list-group-item">
-              Εξοφλημένο ποσό:
-              <span class="text-primary ms-1">{{ order?.paid?.toFixed(2) }}€</span>
+              <p class="text-muted mb-0">
+                Εξοφλημένο ποσό:
+                <span class="text-dark ms-1">{{ order?.paid?.toFixed(2) }}€</span>
+              </p>
             </li>
             <li class="list-group-item">
-              Μη εξοφλημένο ποσό:
-              <span class="text-primary ms-1">{{ order?.unPaid?.toFixed(2) }}€</span>
+              <p class="text-muted mb-0">
+                Μη εξοφλημένο ποσό:
+                <span class="text-dark ms-1">{{ order?.unPaid?.toFixed(2) }}€</span>
+              </p>
             </li>
             <li class="list-group-item">
-              Προιόντα:
-              <span class="text-primary" v-for="product in order?.products" :key="product._id">
-                <router-link
-                  v-if="role === Roles.ADMIN"
-                  :to="`/product/${product?._id}`"
-                  class="badge rounded-pill bg-primary badge-link me-1 mt-1 fs-6 text-capitalize fw-normal prod-link"
-                  >{{ product.name }}</router-link
-                >
-                <span
-                  class="badge rounded-pill bg-primary badge-link me-1 mt-1 fs-6 text-capitalize fw-normal"
-                  v-else
-                  >{{ product.name }}</span
-                >
-              </span>
+              <p class="text-muted mb-0">
+                Προιόντα:
+                <span class="text-primary" v-for="product in order?.products" :key="product._id">
+                  <router-link
+                    v-if="role === Roles.ADMIN"
+                    :to="`/product/${product?._id}`"
+                    class="badge rounded-pill bg-primary badge-link me-1 mt-1 fs-6 text-capitalize fw-normal prod-link"
+                    >{{ product.name }}</router-link
+                  >
+                  <span
+                    class="badge rounded-pill bg-primary badge-link me-1 mt-1 fs-6 text-capitalize fw-normal"
+                    v-else
+                    >{{ product.name }}</span
+                  >
+                </span>
+              </p>
             </li>
             <li class="list-group-item">
-              Kατάσταση:
-              <span class="text-primary ms-1"
-                >{{ order?.status
-                }}<i
-                  class="fa-solid fa-x ms-1 text-danger"
-                  v-if="order.status === OrderStatus.NOT_SEND"
-                ></i>
-                <i class="fa-solid fa-check ms-1 text-success" v-else></i>
-              </span>
+              <p class="text-muted mb-0">
+                Kατάσταση:
+                <span class="text-dark ms-1"
+                  >{{ order?.status
+                  }}<i
+                    class="fa-solid fa-x ms-1 text-danger"
+                    v-if="order.status === OrderStatus.NOT_SEND"
+                  ></i>
+                  <i class="fa-solid fa-check ms-1 text-success" v-else></i>
+                </span>
+              </p>
             </li>
             <li class="list-group-item" v-if="role === Roles.ADMIN">
-              Oδοντίατρος:
-              <router-link
-                :to="`/profile/${order?.dentist._id}`"
-                class="badge rounded-pill bg-primary badge-link me-1 fs-6 text-capitalize fw-normal prod-link"
-                >{{ order?.dentist.fullName }} <i class="fa-solid fa-stethoscope ms-1"></i
-              ></router-link>
+              <p class="text-muted mb-0">
+                Oδοντίατρος:
+                <router-link
+                  :to="`/profile/${order?.dentist._id}`"
+                  class="badge rounded-pill bg-primary badge-link me-1 fs-6 text-capitalize fw-normal prod-link"
+                  >{{ order?.dentist.fullName }} <i class="fa-solid fa-stethoscope ms-1"></i
+                ></router-link>
+              </p>
             </li>
           </ul>
           <div class="card-footer">

@@ -4,39 +4,42 @@
     :key="index"
     :class="['card mt-2 shadow', `${users.length < 3 ? 'me-5' : ''}`]"
   >
-    <div class="p-2 card-header">
+    <div class="p-2 card-header text-muted">
       <span class="me-1 ps-2">Ον/Eπ:</span>
-      <span class="text-primary text-capitalize">{{ user?.fullName }}</span>
+      <span class="text-dark bold">{{ user?.fullName }}</span>
     </div>
     <ul class="list-group list-group-flush">
-      <li class="list-group-item pe-2">
-        <span class="me-1">E-mail:</span>
-        <span class="text-primary"
-          >{{ user?.email }}<i class="fa-solid fa-envelope ms-1"></i>
+      <li class="list-group-item pe-2 text-muted">
+        E-mail:
+        <span class="text-dark"
+          >{{ user?.email }}<i class="fa-solid fa-envelope ms-1 text-primary"></i>
         </span>
       </li>
-      <li class="list-group-item pe-2">
-        <span class="me-1">Ρόλος:</span>
-        <span class="text-primary"
+      <li class="list-group-item pe-2 text-muted">
+        Ρόλος:
+        <span class="text-dark"
           >{{ user?.role }}
-          <i v-if="user?.role === Roles.DENTIST" class="fa-solid fa-stethoscope"></i>
-          <i v-else-if="user?.role === Roles.UNCATEGORIZED" class="fa-solid fa-user"></i
-          ><i v-else class="fa-solid fa-crown"></i
+          <i v-if="user?.role === Roles.DENTIST" class="fa-solid fa-stethoscope text-primary"></i>
+          <i
+            v-else-if="user?.role === Roles.UNCATEGORIZED"
+            class="fa-solid fa-user text-primary"
+          ></i
+          ><i v-else class="fa-solid fa-crown text-primary"></i
         ></span>
       </li>
-      <li class="list-group-item pe-2">
-        <span class="me-1"> Σταθερό τηλέφωνο:</span>
-        <span class="text-primary" v-if="user?.telephone"
-          >{{ user?.telephone }} <i class="fa-solid fa-phone"></i
+      <li class="list-group-item pe-2 text-muted">
+        Σταθερό τηλέφωνο:
+        <span class="text-dark" v-if="user?.telephone"
+          >{{ user?.telephone }} <i class="fa-solid fa-phone text-primary"></i
         ></span>
-        <span class="text-primary" v-else>--</span>
+        <span class="text-dark" v-else>--</span>
       </li>
-      <li class="list-group-item pe-2">
-        <span class="me-1"> Κινήτο τηλέφωνο:</span>
-        <span class="text-primary" v-if="user?.cellPhone"
-          >{{ user?.cellPhone }} <i class="fa-solid fa-mobile-screen-button"></i
+      <li class="list-group-item pe-2 text-muted">
+        Κινήτο τηλέφωνο:
+        <span class="text-dark" v-if="user?.cellPhone"
+          >{{ user?.cellPhone }} <i class="fa-solid fa-mobile-screen-button text-primary"></i
         ></span>
-        <span class="text-primary" v-else>--</span>
+        <span class="text-dark" v-else>--</span>
       </li>
     </ul>
     <div

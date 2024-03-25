@@ -10,13 +10,13 @@
       <order-general :order="order" />
       <order-dentist :dentist="order.dentist" :id="user.userId" />
       <order-products :products="order.products" :role="user.role" />
+      <order-update
+        :order="order"
+        :products="products"
+        @order-updated="handleOrderUpdated"
+        v-if="user.role === Roles.ADMIN"
+      />
     </div>
-    <order-update
-      :order="order"
-      :products="products"
-      @order-updated="handleOrderUpdated"
-      v-if="user.role === Roles.ADMIN"
-    />
   </div>
   <not-found-entity v-if="!loading && !order" :message="'Δεν βρέθηκε η παραγγελία'" />
 </template>

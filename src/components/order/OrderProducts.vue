@@ -20,8 +20,8 @@
             `${products?.length < 2 ? 'w-100' : ''}`
           ]"
         >
-          <p :class="[role === Roles.ADMIN ? 'mb-1' : 'mb-0', 'text-center']">
-            Ονομα: <span class="text-primary text-capitalize w-100">{{ prod?.name }}</span>
+          <p :class="[role === Roles.ADMIN ? 'mb-1' : 'mb-0', 'text-center', 'text-muted']">
+            Ονομα: <span class="text-dark text-capitalize w-100">{{ prod?.name }}</span>
           </p>
           <router-link
             :to="`/product/${prod?._id}`"

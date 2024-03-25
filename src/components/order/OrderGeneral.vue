@@ -11,47 +11,49 @@
             order?.numberOfOrder ?? 'remember to fix this shit'
           }}</span>
         </h5>
-        <p class="m-1">
-          <span class="me-1">Δημιουργήθηκε απο:</span>
-          <span class="text-primary text-capitalize" v-if="order.createdBy"
-            >{{ order?.createdBy.fullName }} <i class="fa-solid fa-user"></i
+        <p class="m-1 text-muted">
+          Δημιουργήθηκε απο:
+          <span class="text-dark text-capitalize" v-if="order.createdBy"
+            >{{ order?.createdBy.fullName }} <i class="fa-solid fa-user text-primary"></i
           ></span>
-          <span class="text-primary" v-else>Δεν βρέθηκε χρήστης</span>
+          <span class="text-dark" v-else>Δεν βρέθηκε χρήστης</span>
         </p>
-        <p class="m-1">
-          <span class="me-1">Ημ/νία παραλαβής:</span>
-          <span class="text-primary"
-            >{{ formattedDate(order?.takenDate) }} <i class="fa-solid fa-calendar-days"></i
+        <p class="m-1 text-muted">
+          Ημ/νία παραλαβής:
+          <span class="text-dark"
+            >{{ formattedDate(order?.takenDate) }}
+            <i class="fa-solid fa-calendar-days text-primary"></i
           ></span>
         </p>
-        <p class="m-1">
-          <span class="me-1"> Ημ/νία αποστολής:</span>
-          <span class="text-primary"
+        <p class="m-1 text-muted">
+          Ημ/νία αποστολής:
+          <span class="text-dark"
             >{{ formattedDate(order?.sendDate) }}
-            <i class="fa-solid fa-calendar-days" v-if="order?.sendDate"></i
+            <i class="fa-solid fa-calendar-days text-primary" v-if="order?.sendDate"></i
           ></span>
         </p>
-        <p class="m-1">
-          <span class="me-1"> Συνολικό κόστος:</span>
-          <span class="text-primary">{{ order?.totalCost.toFixed(2) }}€</span>
+        <p class="m-1 text-muted">
+          Συνολικό κόστος:
+          <span class="text-dark">{{ order?.totalCost.toFixed(2) }}€</span>
         </p>
-        <p class="m-1">
-          <span class="me-1"> Εξοφλημένο:</span>
-          <span class="text-primary">{{ order?.paid ? order?.paid.toFixed(2) : 0 }}€</span>
+        <p class="m-1 text-muted">
+          Εξοφλημένο:
+          <span class="text-dark">{{ order?.paid ? order?.paid.toFixed(2) : 0 }}€</span>
         </p>
-        <p class="m-1">
-          <span class="me-1"> Μη εξοφλημένο:</span>
-          <span class="text-primary">{{ order?.unPaid.toFixed(2) }}€</span>
+        <p class="m-1 text-muted">
+          Μη εξοφλημένο:
+          <span class="text-dark">{{ order?.unPaid.toFixed(2) }}€</span>
         </p>
-        <p class="mb-0 mx-1 mt-1">
-          <span class="me-1"> Τελευταία ενημέρωση:</span>
-          <span class="text-primary"
-            >{{ formattedDate(order?.updatedAt) }} <i class="fa-solid fa-calendar-days"></i
+        <p class="mb-0 mx-1 mt-1 text-muted">
+          Τελευταία ενημέρωση:
+          <span class="text-dark"
+            >{{ formattedDate(order?.updatedAt) }}
+            <i class="fa-solid fa-calendar-days text-primary"></i
           ></span>
         </p>
-        <p class="m-1">
-          <span class="me-1">Kατάσταση:</span>
-          <span class="text-primary"
+        <p class="m-1 text-muted">
+          Kατάσταση:
+          <span class="text-dark"
             >{{ order?.status
             }}<i
               class="fa-solid fa-x ms-1 text-danger"
@@ -60,9 +62,9 @@
             <i class="fa-solid fa-check ms-1 text-success" v-else></i>
           </span>
         </p>
-        <p class="mx-1 mb-0 w-100">
-          <label>Περιγραφή: </label>
-          <span class="ms-1 fw-light fs-6">
+        <p class="mx-1 mb-0 w-100 text-muted">
+          Περιγραφή:
+          <span class="ms-1 text-dark fs-6">
             {{ order?.description || 'Δεν υπάρχει περιγραφή' }}</span
           >
         </p>
