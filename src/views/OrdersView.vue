@@ -5,7 +5,7 @@
     </div>
     <div
       class="mc-1 d-flex justify-content-start w-50 wmax-1200 h-100 align-self-start"
-      v-if="user.role === Roles.ADMIN"
+      v-if="user.role === Roles.ADMIN && !isProfile"
     >
       <buttons
         type="button"
@@ -17,42 +17,7 @@
       </buttons>
       <create-order-modal @create="createOrder" :creating="creating" />
     </div>
-    <div class="input-group justify-content-end flex-column wmax-1200 mc-1 btn-filter-group">
-      <div class="d-inline-flex justify-content-end flex-wrap filter">
-        <span class="d-flex align-items-center me-1">Ταξινόμηση βάση κατάστασης: </span>
-        <div class="btn-group flex-wrap">
-          <button
-            :class="['btn', `btn${!status ? '' : '-outline'}-secondary`]"
-            @click="changeStaus()"
-            :disabled="!status"
-          >
-            Όλες
-          </button>
-          <button
-            :class="['btn', `btn${status === OrderStatus.NOT_SEND ? '' : '-outline'}-secondary`]"
-            @click="changeStaus(OrderStatus.NOT_SEND)"
-            :disabled="status === OrderStatus.NOT_SEND"
-          >
-            Μη απεσταλμένες <i class="fa-solid fa-x ms-1 text-danger"></i>
-          </button>
-          <button
-            :class="['btn', `btn${status === OrderStatus.SEND ? '' : '-outline'}-secondary`]"
-            @click="changeStaus(OrderStatus.SEND)"
-            :disabled="status === OrderStatus.SEND"
-          >
-            Aπεσταλμένες <i class="fa-solid fa-check ms-1 text-success"></i>
-          </button>
-        </div>
-      </div>
-      <div class="d-inline-flex justify-content-end filter">
-        <p class="mb-0">
-          Ταξινόμηση βάση:
-          <span class="badge bg-primary fs-6 fw-normal mt-1 p-2">{{
-            !status ? OrderStatus.SEND : status
-          }}</span>
-        </p>
-      </div>
-    </div>
+    <status-filter @change-status="changeStaus" :status="status" />
   </div>
   <spinner-component v-if="loading" :use-margin-top="true" />
   <total-count :length="count" :entity="'παραγγελίες'" class="mt-2" v-if="!loading" />
@@ -69,13 +34,7 @@ import { onBeforeUnmount, onMounted, ref } from 'vue'
 import SearchComponent from '../components/SearchComponent.vue'
 import { orderHttp } from '../services/orderHttp'
 import { ToastHeader, ToastConclusion, OrderStatus, Roles } from '../types/enums'
-import {
-  GroupedOrdersResult,
-  MessageResponse,
-  Order,
-  OrderResponse,
-  OrdersResponse
-} from '../types/interfaces'
+import { MessageResponse, Order, OrderResponse, OrdersResponse } from '../types/interfaces'
 import { useToastStore } from '../stores/toastStore'
 import SpinnerComponent from '../components/SpinnerComponent.vue'
 import OrdersCards from '../components/order/OrdersCards.vue'
@@ -84,25 +43,15 @@ import NotFoundEntity from '../components/NotFoundEntity.vue'
 import CreateOrderModal from '../components/modals/CreateOrderModal.vue'
 import { AxiosError } from 'axios'
 import { useUserStore } from '../stores/userStore'
+import { useOrder } from '../composables/useOrder'
+import StatusFilter from '../components/order/StatusFilter.vue'
 
-const monthNamesToNumbers: Record<string, number> = {
-  Ιανουαρίου: 1,
-  Φεβρουαρίου: 2,
-  Μαρτίου: 3,
-  Απριλίου: 4,
-  Μαΐου: 5,
-  Ιουνίου: 6,
-  Ιουλίου: 7,
-  Αυγούστου: 8,
-  Σεπτεμβρίου: 9,
-  Οκτωβρίου: 10,
-  Νοεμβρίου: 11,
-  Δεκεμβρίου: 12
-}
+const { isProfile, id } = defineProps<{
+  id: string
+  isProfile: boolean
+}>()
 
 const loading = ref(false)
-const orders = ref<null | GroupedOrdersResult>(null)
-const count = ref<number>(0)
 const search = ref<string | OrderStatus>('')
 const creating = ref(false)
 const status = ref<null | OrderStatus>(null)
@@ -110,6 +59,8 @@ const fetchedOrders = ref<Order[]>()
 
 const toast = useToastStore()
 const { user } = useUserStore()
+
+const { count, handleOrders, orders } = useOrder()
 
 onMounted(async () => {
   fetchedOrders.value = await getOrders()
@@ -128,7 +79,13 @@ const getOrders = async () => {
   try {
     let link: string
     if (user.role === Roles.ADMIN) {
-      link = search.value ? `/get-orders?&search=${search.value}` : '/get-orders'
+      if (isProfile) {
+        link = search.value
+          ? `/get-orders-per-dentist?search=${search.value}&dentist=${id}`
+          : `/get-orders-per-dentist?dentist=${id}`
+      } else {
+        link = search.value ? `/get-orders?&search=${search.value}` : '/get-orders'
+      }
     } else if (user.role === Roles.DENTIST) {
       link = search.value ? `/get-my-orders?&search=${search.value}` : '/get-my-orders'
     }
@@ -140,39 +97,6 @@ const getOrders = async () => {
   } finally {
     loading.value = false
   }
-}
-
-const groupOrdersByMonth = (orders: Order[]): GroupedOrdersResult => {
-  const grouped = orders.reduce<GroupedOrdersResult>(
-    (acc, order) => {
-      const statusBased = order.status === OrderStatus.SEND ? order.sendDate : order.takenDate
-      const date = new Date(statusBased)
-      const monthYear = `${date.toLocaleString('el-GR', { month: 'long' })} ${date.getFullYear()}`
-
-      if (!acc.groupedOrders[monthYear]) {
-        acc.groupedOrders[monthYear] = []
-        acc.sortedMonths.push(monthYear)
-      }
-
-      acc.groupedOrders[monthYear].push(order)
-
-      return acc
-    },
-    { groupedOrders: {}, sortedMonths: [] }
-  )
-
-  grouped.sortedMonths.sort((a, b) => {
-    const [monthA, yearA] = a.split(' ')
-    const [monthB, yearB] = b.split(' ')
-    const numericMonthA = monthNamesToNumbers[monthA]
-    const numericMonthB = monthNamesToNumbers[monthB]
-    const dateA = new Date(parseInt(yearA), numericMonthA - 1)
-    const dateB = new Date(parseInt(yearB), numericMonthB - 1)
-
-    return dateB.getTime() - dateA.getTime()
-  })
-
-  return grouped
 }
 
 const changeStaus = async (st?: OrderStatus) => {
@@ -206,22 +130,4 @@ const createOrder = async (order: Order) => {
     creating.value = false
   }
 }
-
-const handleOrders = (res: Order[]) => {
-  if (res.length) {
-    orders.value = groupOrdersByMonth(res)
-    count.value = res.length
-  } else {
-    orders.value = {} as GroupedOrdersResult
-    count.value = res.length
-  }
-}
 </script>
-
-<style scoped>
-@media (max-width: 1500px) {
-  .filter {
-    justify-content: flex-start !important;
-  }
-}
-</style>

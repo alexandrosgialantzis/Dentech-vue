@@ -1,4 +1,7 @@
 <template>
+  <span class="badge bg-warning fs-6 fw-normal p-2 w-100 mb-2 mt-2"
+    >Αλλαγή ρόλου <i class="fa-solid fa-arrow-rotate-right ms-1"></i
+  ></span>
   <div class="d-flex flex-column mt-1 mb-2 border shadow p-3 bg-white rounded">
     <select class="form-select mb-1" @change="onChange">
       <option selected disabled>Επιλέξτε ρόλο</option>

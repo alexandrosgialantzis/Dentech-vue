@@ -6,7 +6,15 @@
       <change-role :roles="roles" @update-role="handleRoleChange" :loading="loadingChangeRole" />
     </div>
     <div class="col-12">
-      <single-user-orders v-if="user?.role === Roles.DENTIST" :orders="orders" :loading="loading" />
+      <span class="badge bg-primary fs-6 fw-normal p-2 w-100 mb-2"
+        >Παραγγελίες χρήστη <i class="fa-solid fa-truck-fast ms-1"></i
+      ></span>
+      <single-user-orders
+        v-if="user?.role === Roles.DENTIST"
+        :orders="orders"
+        :loading="loading"
+        :id="user?._id"
+      />
     </div>
   </div>
   <not-found-entity :message="'Δεν βρέθηκε ο χρήστης'" v-if="!loading && !user" />

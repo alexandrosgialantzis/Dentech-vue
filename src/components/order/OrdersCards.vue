@@ -4,10 +4,10 @@
       <h5 class="mb-0">{{ month }}</h5>
     </div>
     <total-count
-      :content="`Παραγγελιες ${month}`"
+      :content="`Παραγγελίες ${month}`"
       :length="orders?.groupedOrders[month].length"
-      :entity="'παραγγελιες'"
-      class="mb-3"
+      :entity="'παραγγελίες'"
+      class="mb-1"
     />
     <total-count
       :content="`Συνολικό εξοφλημένο πόσο`"

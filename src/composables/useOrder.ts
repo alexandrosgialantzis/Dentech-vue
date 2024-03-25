@@ -1,10 +1,25 @@
+import { ref } from 'vue'
 import { orderHttp } from '../services/orderHttp'
 import { useToastStore } from '../stores/toastStore'
 import { ToastConclusion, ToastHeader } from '../types/enums'
-import { Order, OrderResponse } from '../types/interfaces'
+import { GroupedOrdersResult, Order, OrderResponse } from '../types/interfaces'
+import { groupOrdersByMonth } from '../utils/orders'
 
 export const useOrder = () => {
   const toast = useToastStore()
+
+  const orders = ref<null | GroupedOrdersResult>(null)
+  const count = ref(0)
+
+  const handleOrders = (res: Order[]) => {
+    if (res.length) {
+      orders.value = groupOrdersByMonth(res)
+      count.value = res.length
+    } else {
+      orders.value = {} as GroupedOrdersResult
+      count.value = res.length
+    }
+  }
 
   const deleteOrder = async (id: string) => {
     try {
@@ -15,5 +30,5 @@ export const useOrder = () => {
     }
   }
 
-  return { deleteOrder }
+  return { deleteOrder, orders, count, handleOrders }
 }
