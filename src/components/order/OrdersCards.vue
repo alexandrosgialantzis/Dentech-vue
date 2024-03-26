@@ -63,12 +63,18 @@
             <li class="list-group-item">
               <p class="text-muted mb-0">
                 Προιόντα:
-                <span class="text-primary" v-for="product in order?.products" :key="product._id">
+                <span
+                  class="text-primary"
+                  v-for="product in order?.products"
+                  :key="(product.id as Product)._id"
+                >
                   <router-link
                     v-if="role === Roles.ADMIN"
-                    :to="`/product/${product?._id}`"
-                    class="badge rounded-pill bg-primary badge-link me-1 mt-1 fs-6 text-capitalize fw-normal prod-link"
-                    >{{ product.name }}</router-link
+                    :to="`/product/${(product.id as Product)._id}`"
+                    class="badge rounded-pill bg-primary badge-link me-1 mt-1 fs-6 fw-normal prod-link"
+                    ><span class="text-capitalize">{{ (product.id as Product).name }}</span> x{{
+                      product.amount
+                    }}</router-link
                   >
                   <span
                     class="badge rounded-pill bg-primary badge-link me-1 mt-1 fs-6 text-capitalize fw-normal"
@@ -114,7 +120,7 @@
 </template>
 
 <script lang="ts" setup>
-import { GroupedOrdersResult } from '../../types/interfaces'
+import { GroupedOrdersResult, Product } from '../../types/interfaces'
 import { computed, defineProps } from 'vue'
 import { formattedDate } from '../../utils/date'
 import { OrderStatus, Roles } from '../../types/enums'

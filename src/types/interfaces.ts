@@ -83,6 +83,11 @@ export interface Product {
   updatedAt: Date
 }
 
+export interface ProductsOnOrder extends Product {
+  id: string | Product
+  amount: number
+}
+
 export interface Order {
   _id: string
   takenDate: Date
@@ -93,7 +98,7 @@ export interface Order {
   unPaid: number
   paid?: number
   description: string
-  products: Product[]
+  products: ProductsOnOrder[]
   updatedAt: Date
   numberOfOrder: string
   status: OrderStatus

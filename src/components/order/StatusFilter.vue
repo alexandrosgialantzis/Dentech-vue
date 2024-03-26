@@ -41,7 +41,7 @@
 import { OrderStatus } from '../../types/enums'
 
 defineProps<{
-  status: OrderStatus | string
+  status: OrderStatus | null
 }>()
 
 const emit = defineEmits(['change-status'])

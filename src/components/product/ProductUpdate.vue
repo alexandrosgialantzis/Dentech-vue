@@ -42,10 +42,10 @@ const { product } = defineProps<{
 }>()
 
 const updating = ref(false)
+
 const prod = ref<null | Product>({ ...product })
 
 const toast = useToastStore()
-
 const productStore = useProductStore()
 
 const emit = defineEmits(['product-updated'])

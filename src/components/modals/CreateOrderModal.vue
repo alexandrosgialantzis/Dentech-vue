@@ -19,10 +19,9 @@
           ></button>
         </div>
         <div class="modal-body">
-          <form
+          <div
             class="row g-3"
             v-if="!doctors.loading && docs?.length && products?.length && !product.loading"
-            @submit.prevent="createOrder"
           >
             <div class="col-md-4">
               <label class="form-label"
@@ -49,18 +48,41 @@
             <div class="col-12" v-if="products?.length">
               <label class="form-label">Προϊόντα: <span class="text-danger fs-6">*</span></label>
               <div class="w-100">
-                <div class="radio-check-wrapper" v-for="(product, index) in products" :key="index">
-                  <div class="form-check form-check-inline form-check mb-0 mx-0">
-                    <input
-                      class="form-check-input text-capitalize"
-                      type="checkbox"
-                      :value="product._id"
-                      v-model="productsToAdd"
-                      @change="handleCheckboxChange($event, product._id)"
-                    />
-                    <label class="form-check-label text-capitalize">
-                      {{ product?.name }}
-                    </label>
+                <div class="row justify-content-between">
+                  <div
+                    v-for="(product, index) in products"
+                    :key="index"
+                    class="d-flex align-items-center justify-content-between py-1 col-md-4"
+                  >
+                    <div class="'p-1 me-1'">
+                      <label class="form-check-label text-capitalize me-1">
+                        {{ product?.name }}
+                      </label>
+                    </div>
+                    <div class="d-flex">
+                      <span class="bagde bg-primary text-light rounded px-3">
+                        {{
+                          (productsToAdd.find((prod) => prod.id === product._id) || { amount: 0 })
+                            .amount
+                        }}</span
+                      >
+                      <button
+                        class="btn btn-outline-success ms-1 d-flex justify-content-center align-items-center btn-product rounded"
+                        @click="add(product._id)"
+                      >
+                        <i class="fa-solid fa-plus"></i>
+                      </button>
+                      <button
+                        class="btn btn-outline-danger ms-1 d-flex justify-content-center align-items-center btn-product rounded"
+                        :disabled="
+                          (productsToAdd.find((prod) => prod.id === product._id) || { amount: 0 })
+                            .amount <= 0
+                        "
+                        @click="remove(product._id)"
+                      >
+                        <i class="fa-solid fa-minus"></i>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -91,7 +113,7 @@
               <textarea class="form-control" rows="3" v-model="description"></textarea>
             </div>
             <p class="form-text mb-0"><span class="text-danger fs-6">*</span> Αναγκαία πεδία.</p>
-          </form>
+          </div>
           <p class="mb-0" v-else>
             Προσθέστε προίοντα και οδοντιάτρους ώστε να δημιουργήσετε την πρώτη παραγγελία
           </p>
@@ -120,7 +142,7 @@
 
 <script setup lang="ts">
 import { defineProps, onMounted, ref, defineEmits } from 'vue'
-import { Product, User } from '../../types/interfaces'
+import { Product, User, ProductsOnOrder } from '../../types/interfaces'
 import { ToastConclusion, ToastHeader } from '../../types/enums'
 import { useToastStore } from '../../stores/toastStore'
 import NotFoundEntity from './../NotFoundEntity.vue'
@@ -142,7 +164,8 @@ const paid = ref(0)
 const docs = ref<User[]>()
 const products = ref<Product[]>()
 const selectedDoctor = ref('')
-const productsToAdd = ref<string[] | ''>([])
+const productsToAdd = ref<ProductsOnOrder[]>([])
+const productsToAddIds = ref([])
 const unPaid = ref(0)
 const totalCost = ref(0)
 
@@ -163,16 +186,44 @@ onMounted(async () => {
   docs.value = doctors.getDocs
 })
 
-const handleCheckboxChange = (event: Event, productId: string) => {
-  const target = event.target as HTMLInputElement
-  const prod = product.products.find((prod) => prod._id === productId)
-  if (target.checked) {
-    totalCost.value += prod.price
+const add = (id: string) => {
+  const prod = product.products.find((prod) => prod._id === id)
+  const i = productsToAdd.value.findIndex((prod) => prod.id === id)
+
+  if (i !== -1) {
+    const updatedProduct = {
+      ...productsToAdd.value[i],
+      amount: productsToAdd.value[i].amount + 1
+    }
+    productsToAdd.value = [
+      ...productsToAdd.value.slice(0, i),
+      updatedProduct,
+      ...productsToAdd.value.slice(i + 1)
+    ]
   } else {
-    totalCost.value -= prod.price
+    productsToAdd.value.push({ id, amount: 1 } as ProductsOnOrder)
+    productsToAddIds.value.push(id)
+    totalCost.value += prod.price
+    return
   }
 
+  totalCost.value += prod.price
   handleUnPaid()
+}
+
+const remove = (id: string) => {
+  const i = productsToAdd.value.findIndex((prod) => prod.id === id)
+  productsToAdd.value[i].amount -= 1
+
+  const prod = product.products.find((prod) => prod._id === id)
+
+  totalCost.value -= prod.price
+  handleUnPaid()
+
+  if (productsToAdd.value[i].amount <= 0) {
+    productsToAdd.value.splice(i, 1)
+    productsToAddIds.value = productsToAddIds.value.filter((prodId) => prodId !== id)
+  }
 }
 
 const handleUnPaid = () => {
@@ -223,3 +274,9 @@ const createOrder = async () => {
   }
 }
 </script>
+
+<style scoped>
+.btn-product {
+  min-height: 1px !important;
+}
+</style>

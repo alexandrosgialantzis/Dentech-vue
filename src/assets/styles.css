@@ -4,6 +4,16 @@ body {
   font-size: 17px;
 }
 
+.btn-product {
+  width: 25px !important;
+  height: 25px !important;
+  min-height: 1px !important;
+}
+
+.cursor {
+  cursor: pointer !important;
+}
+
 img {
   object-fit: cover;
   width: 100vw;

@@ -21,10 +21,12 @@
           ]"
         >
           <p :class="[role === Roles.ADMIN ? 'mb-1' : 'mb-0', 'text-center', 'text-muted']">
-            Ονομα: <span class="text-dark text-capitalize w-100">{{ prod?.name }}</span>
+            Ονομα:
+            <span class="text-dark text-capitalize w-100">{{ (prod?.id as Product).name }}</span>
+            <span class="text-dark text-capitalize w-100 ms-1">x{{ prod.amount }}</span>
           </p>
           <router-link
-            :to="`/product/${prod?._id}`"
+            :to="`/product/${(prod?.id as Product)._id}`"
             class="text-center w-100 d-block"
             v-if="role === Roles.ADMIN"
             >Δείτε το προιόν</router-link
@@ -38,12 +40,12 @@
 
 <script lang="ts" setup>
 import { defineProps } from 'vue'
-import { Product } from '../../types/interfaces'
+import { Product, ProductsOnOrder } from '../../types/interfaces'
 import NotFoundEntity from '../NotFoundEntity.vue'
 import { Roles } from '../../types/enums'
 
 defineProps<{
-  products: Product[]
+  products: ProductsOnOrder[]
   role: Roles
 }>()
 </script>

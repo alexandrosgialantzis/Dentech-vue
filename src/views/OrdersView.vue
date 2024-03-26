@@ -7,14 +7,14 @@
       class="mc-1 d-flex justify-content-start w-50 wmax-1200 h-100 align-self-start"
       v-if="user.role === Roles.ADMIN && !isProfile"
     >
-      <buttons
+      <button
         type="button"
         class="btn btn-outline-success d-flex align-items-center"
         data-bs-toggle="modal"
         data-bs-target="#exampleModal"
       >
         Δημιουργεία παραγγελίας <i class="fa-solid fa-plus ms-1"></i>
-      </buttons>
+      </button>
       <create-order-modal @create="createOrder" :creating="creating" />
     </div>
     <status-filter @change-status="changeStaus" :status="status" />
@@ -47,8 +47,8 @@ import { useOrder } from '../composables/useOrder'
 import StatusFilter from '../components/order/StatusFilter.vue'
 
 const { isProfile, id } = defineProps<{
-  id: string
-  isProfile: boolean
+  id?: string
+  isProfile?: boolean
 }>()
 
 const loading = ref(false)
