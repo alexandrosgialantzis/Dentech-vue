@@ -1,20 +1,22 @@
 <template>
   <div v-for="month in orders?.sortedMonths" :key="month" class="w-100">
-    <div class="alert alert-primary text-center">
+    <div class="alert alert-primary text-center mb-1">
       <h5 class="mb-0">{{ month }}</h5>
     </div>
-    <total-count
-      :content="`Παραγγελίες ${month}`"
-      :length="orders?.groupedOrders[month].length"
-      :entity="'παραγγελίες'"
-      class="mb-1"
-    />
-    <total-count
-      :content="`Συνολικό εξοφλημένο πόσο`"
-      :length="getPaidByMonth(month).value"
-      :entity="'€'"
-      class="mb-3"
-    />
+    <div class="d-flex">
+      <total-count
+        :content="`Παραγγελίες ${month}`"
+        :length="orders?.groupedOrders[month].length"
+        :entity="'παραγγελίες'"
+        class="mb-1"
+      />
+      <total-count
+        :content="`Συνολικό εξοφλημένο πόσο`"
+        :length="getPaidByMonth(month).value"
+        :entity="'€'"
+        class="mb-1 ms-2"
+      />
+    </div>
     <div class="row">
       <div class="col-lg-4 pb-3" v-for="order in orders?.groupedOrders[month]" :key="order._id">
         <div class="card shadow">

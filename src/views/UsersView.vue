@@ -49,7 +49,7 @@
     </div>
   </div>
   <spinner-component v-if="loading" :useMarginTop="true" />
-  <div class="d-flex flex-column justify-content-center mt-2" v-if="!loading && users?.length">
+  <div class="d-flex flex-column justify-content-center mt-1" v-if="!loading && users?.length">
     <total-count :length="users.length" :entity="'χρήστες'" />
     <div
       :class="[

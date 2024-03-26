@@ -6,7 +6,7 @@
     ></span>
     <div class="card shadow">
       <div class="card-body d-flex flex-wrap justify-content-between">
-        <form class="row g-3" v-if="!doctors.loading && docs?.length" @submit.prevent="updateOrder">
+        <div class="row g-3" v-if="!doctors.loading && docs?.length">
           <div class="col-md-4">
             <label class="form-label">Ημ/νία παραλαβής:</label>
             <input type="text" class="form-control" v-model="takenDateToString" />
@@ -64,12 +64,12 @@
             <textarea class="form-control" rows="3" v-model="localOrder.description"></textarea>
           </div>
           <div class="col-12">
-            <button type="submit" class="btn btn-update" :disabled="updating">
+            <button class="btn btn-update" :disabled="updating" @click="updateOrder">
               <button-content v-if="updating" />
               <span v-else>Ενημέρωση<i class="fa-solid fa-pencil ms-1"></i></span>
             </button>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   </div>

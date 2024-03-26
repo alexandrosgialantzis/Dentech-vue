@@ -20,9 +20,19 @@
     <status-filter @change-status="changeStaus" :status="status" />
   </div>
   <spinner-component v-if="loading" :use-margin-top="true" />
-  <total-count :length="count" :entity="'παραγγελίες'" class="mt-2" v-if="!loading" />
+  <div class="d-flex">
+    <total-count :length="count" :entity="'παραγγελίες'" class="mt-1" v-if="!loading" />
+    <div class="d-inline-flex justify-content-end filter mt-1 ms-1" v-if="!loading">
+      <p class="mb-0">
+        Ταξινόμηση βάση:
+        <span class="badge bg-primary fs-6 fw-normal p-2">{{
+          !status ? OrderStatus.SEND : status
+        }}</span>
+      </p>
+    </div>
+  </div>
   <div
-    class="d-flex justify-content-between align-items-center flex-column mt-3"
+    class="d-flex justify-content-between align-items-center flex-column mt-1"
     v-if="!loading && count"
   >
     <orders-cards :orders="orders" :role="user.role" />

@@ -136,6 +136,10 @@ input[type='radio'] {
   margin-right: 5px;
 }
 
+.btn-product {
+  min-height: 1px !important;
+}
+
 @media (min-width: 600px) {
   .modal-dialog {
     max-width: 800px;
@@ -152,7 +156,7 @@ input[type='radio'] {
   }
 
   .cp-btn {
-    margin-top: 10px;
+    margin-top: 0.25rem !important;
     margin-left: 0px !important;
   }
 }
@@ -163,7 +167,7 @@ input[type='radio'] {
   }
 
   .mc-1 {
-    margin-top: 10px !important;
+    margin-top: 0.25rem !important;
     margin-left: 0px;
   }
 

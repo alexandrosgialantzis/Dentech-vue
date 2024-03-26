@@ -1,6 +1,6 @@
 <template>
   <div class="row justify-content-between">
-    <div class="p-2 col-lg-4" v-for="(product, i) in products" :key="i">
+    <div class="p-1 col-lg-4" v-for="(product, i) in products" :key="i">
       <div class="card shadow">
         <div class="card-header">Προιόν {{ i + 1 }}.</div>
         <ul class="list-group list-group-flush">

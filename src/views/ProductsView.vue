@@ -14,7 +14,7 @@
     <create-product-modal :loading="creating" @create="createProduct" />
   </div>
   <spinner-component v-if="product.loading" :use-margin-top="true" />
-  <div class="mt-2" v-if="!product.loading && products?.length">
+  <div class="mt-1" v-if="!product.loading && products?.length">
     <total-count :length="products?.length" :entity="'Προιόντα'" />
     <products-card :products="products" />
   </div>

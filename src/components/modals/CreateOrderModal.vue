@@ -49,39 +49,39 @@
               <label class="form-label">Προϊόντα: <span class="text-danger fs-6">*</span></label>
               <div class="w-100">
                 <div class="row justify-content-between">
-                  <div
-                    v-for="(product, index) in products"
-                    :key="index"
-                    class="d-flex align-items-center justify-content-between py-1 col-md-4"
-                  >
-                    <div class="'p-1 me-1'">
-                      <label class="form-check-label text-capitalize me-1">
-                        {{ product?.name }}
-                      </label>
-                    </div>
-                    <div class="d-flex">
-                      <span class="bagde bg-primary text-light rounded px-3">
-                        {{
-                          (productsToAdd.find((prod) => prod.id === product._id) || { amount: 0 })
-                            .amount
-                        }}</span
-                      >
-                      <button
-                        class="btn btn-outline-success ms-1 d-flex justify-content-center align-items-center btn-product rounded"
-                        @click="add(product._id)"
-                      >
-                        <i class="fa-solid fa-plus"></i>
-                      </button>
-                      <button
-                        class="btn btn-outline-danger ms-1 d-flex justify-content-center align-items-center btn-product rounded"
-                        :disabled="
-                          (productsToAdd.find((prod) => prod.id === product._id) || { amount: 0 })
-                            .amount <= 0
-                        "
-                        @click="remove(product._id)"
-                      >
-                        <i class="fa-solid fa-minus"></i>
-                      </button>
+                  <div v-for="(product, index) in products" :key="index" class="py-1 col-md-4">
+                    <div
+                      class="p-2 w-100 d-flex align-items-center justify-content-between border rounded shadow"
+                    >
+                      <div class="me-1">
+                        <label class="form-check-label text-capitalize me-1">
+                          {{ product?.name }}
+                        </label>
+                      </div>
+                      <div class="d-flex">
+                        <span class="bagde bg-primary text-light rounded px-3">
+                          {{
+                            (productsToAdd.find((prod) => prod.id === product._id) || { amount: 0 })
+                              .amount
+                          }}</span
+                        >
+                        <button
+                          class="btn btn-outline-success ms-1 d-flex justify-content-center align-items-center btn-product rounded"
+                          @click="add(product._id)"
+                        >
+                          <i class="fa-solid fa-plus"></i>
+                        </button>
+                        <button
+                          class="btn btn-outline-danger ms-1 d-flex justify-content-center align-items-center btn-product rounded"
+                          :disabled="
+                            (productsToAdd.find((prod) => prod.id === product._id) || { amount: 0 })
+                              .amount <= 0
+                          "
+                          @click="remove(product._id)"
+                        >
+                          <i class="fa-solid fa-minus"></i>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -274,9 +274,3 @@ const createOrder = async () => {
   }
 }
 </script>
-
-<style scoped>
-.btn-product {
-  min-height: 1px !important;
-}
-</style>

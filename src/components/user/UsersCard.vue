@@ -2,7 +2,7 @@
   <div
     v-for="(user, index) in users"
     :key="index"
-    :class="['card mt-2 shadow', `${users.length < 3 ? 'me-5' : ''}`]"
+    :class="['card mt-1 shadow', `${users.length < 3 ? 'me-5' : ''}`]"
   >
     <div class="p-2 card-header text-muted">
       <span class="me-1 ps-2">Ον/Eπ:</span>
@@ -73,14 +73,14 @@ const userStore = useUserStore()
 @media (max-width: 1190px) {
   .card {
     width: 49% !important;
-    margin: 10px 0 0 5px !important;
+    margin: 0.25rem 0 0 5px !important;
   }
 }
 
 @media (max-width: 690px) {
   .card {
     width: 100% !important;
-    margin: 10px 0 0 !important;
+    margin: 0.25rem 0 0 !important;
   }
 }
 </style>
