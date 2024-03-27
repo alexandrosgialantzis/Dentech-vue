@@ -145,7 +145,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, onMounted, ref, defineEmits } from 'vue'
+import { onMounted, ref } from 'vue'
 import { Product, User, ProductsOnOrder } from '../../types/interfaces'
 import { ToastConclusion, ToastHeader } from '../../types/enums'
 import { useToastStore } from '../../stores/toastStore'

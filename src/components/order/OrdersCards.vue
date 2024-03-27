@@ -119,8 +119,9 @@
                     Ασθενής: <span class="text-dark">{{ order.client ?? '--' }}</span>
                   </li>
                 </ul>
-                <div class="card-footer">
+                <div class="card-footer d-flex justify-content-between align-items-center">
                   <router-link :to="`/order/${order._id}`">Δείτε τη παραγγελία</router-link>
+                  <repayment-comp :paying="paying" @pay="emitPay(order._id, order.totalCost)" />
                 </div>
               </div>
             </div>
@@ -136,8 +137,18 @@ import { GroupedOrdersResult, Product } from '../../types/interfaces'
 import { computed, defineProps } from 'vue'
 import { formattedDate } from '../../utils/date'
 import { OrderStatus, Roles } from '../../types/enums'
+import RepaymentComp from '../../components/RepaymentComp.vue'
 import TotalCount from '../../components/TotalCount.vue'
+import { useOrder } from '../../composables/useOrder'
 
+const { pay, paying } = useOrder()
+
+const emit = defineEmits(['pay'])
+
+const emitPay = async (id: string, total: number) => {
+  const order = await pay(id, total)
+  emit('pay', order)
+}
 const props = defineProps<{
   orders: GroupedOrdersResult
   role: Roles

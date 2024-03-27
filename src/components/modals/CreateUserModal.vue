@@ -73,7 +73,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { Roles } from '../../types/enums'
-import { defineProps, defineEmits } from 'vue'
 import { UserPayload } from '../../types/interfaces'
 import ButtonContent from '../ButtonContent.vue'
 import { useDoctorStore } from '../../stores/doctorStore'

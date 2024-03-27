@@ -19,7 +19,12 @@
           </div>
           <div class="col-md-3">
             <label class="form-label">Εξοφλημένο ποσό: </label>
-            <input type="number" class="form-control" v-model="localOrder.paid" />
+            <input
+              type="number"
+              class="form-control"
+              v-model="localOrder.paid"
+              @input="handleUnPaid"
+            />
           </div>
           <div class="col-md-3">
             <label class="form-label">Ασθενής: </label>
@@ -114,7 +119,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, onMounted, ref, defineEmits } from 'vue'
+import { defineProps, onMounted, ref, defineEmits, computed, watchEffect } from 'vue'
 import { MessageResponse, Order, OrderResponse, Product, User } from '../../types/interfaces'
 import { ToastConclusion, ToastHeader } from '../../types/enums'
 import { useToastStore } from '../../stores/toastStore'
@@ -133,7 +138,6 @@ const { order, products } = defineProps<{
   order: Order
 }>()
 
-const localOrder = ref<null | Order>({ ...order })
 const sendDateToString = ref('')
 const takenDateToString = ref('')
 const docs = ref<null | User[]>(null)
@@ -164,6 +168,8 @@ onMounted(async () => {
   }
   docs.value = doctors.getDocs
 })
+
+const localOrder = computed(() => ({ ...order }))
 
 const handleUnPaid = () => {
   unPaid.value = totalCost.value - localOrder.value.paid
@@ -266,6 +272,10 @@ const updateOrder = async () => {
     productsToRemove.value = []
   }
 }
+
+watchEffect(() => {
+  console.log('order prop updated in child:', order)
+})
 </script>
 
 <style scoped>

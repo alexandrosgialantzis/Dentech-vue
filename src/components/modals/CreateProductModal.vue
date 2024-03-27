@@ -50,7 +50,6 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { defineProps, defineEmits } from 'vue'
 import ButtonContent from '../ButtonContent.vue'
 import { ProductPayload } from '../../types/interfaces'
 import { parseAndCheckNumber } from '../../utils/parseNumber'

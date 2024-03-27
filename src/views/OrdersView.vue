@@ -35,7 +35,7 @@
     class="d-flex justify-content-between align-items-center flex-column mt-1"
     v-if="!loading && count"
   >
-    <orders-cards :orders="orders" :role="user.role" />
+    <orders-cards :orders="orders" :role="user.role" @pay="handleRepayment" />
   </div>
   <not-found-entity message="Δεν βρέθηκαν παραγγελίες" v-if="!count && !loading" />
 </template>
@@ -142,5 +142,14 @@ const createOrder = async (order: Order) => {
   } finally {
     creating.value = false
   }
+}
+
+const handleRepayment = (order: Order) => {
+  const i = unSortedOrders.value.findIndex((o) => o._id === order._id)
+
+  if (i !== -1) {
+    unSortedOrders.value[i] = order
+  }
+  handleOrders(unSortedOrders.value)
 }
 </script>

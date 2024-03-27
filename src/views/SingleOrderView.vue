@@ -1,16 +1,27 @@
 <template>
   <spinner-component v-if="loading" :use-margin-top="true" />
   <div class="max-w1550" v-if="!loading && order">
-    <delete-component
-      :content="'Διαγραφή παραγγελίας'"
-      @handle-delete="handleDelete"
-      :loading="deleting"
-    />
+    <div class="d-flex">
+      <delete-component
+        :content="'Διαγραφή παραγγελίας'"
+        @handle-delete="handleDelete"
+        :loading="deleting"
+        v-if="user.role === Roles.ADMIN"
+      />
+      <repayment-comp
+        :paying="paying"
+        :content="'Εξόφληση παραγγελίας'"
+        class="ms-1 mt-1"
+        @pay="handleRepayment"
+        v-if="user.role === Roles.ADMIN"
+      />
+    </div>
     <div class="row justify-content-between">
       <order-general :order="order" />
       <order-dentist :dentist="order.dentist" :id="user.userId" />
       <order-products :products="order.products" :role="user.role" />
       <order-update
+        :key="`${order._id}-${updateCounter}`"
         :order="order"
         :products="products"
         @order-updated="handleOrderUpdated"
@@ -22,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { orderHttp } from '../services/orderHttp'
 import { Order, OrderResponse, Product } from '../types/interfaces'
 import { useRoute, useRouter } from 'vue-router'
@@ -38,12 +49,14 @@ import NotFoundEntity from '../components/NotFoundEntity.vue'
 import DeleteComponent from '../components/DeleteComponent.vue'
 import { useOrder } from '../composables/useOrder'
 import { useUserStore } from '../stores/userStore'
+import RepaymentComp from '../components/RepaymentComp.vue'
 
 const orderId = ref('')
 const order = ref<null | Order>(null)
 const loading = ref(false)
 const products = ref<Product[] | null>(null)
 const deleting = ref(false)
+const updateCounter = ref(0)
 
 const route = useRoute()
 const router = useRouter()
@@ -51,7 +64,7 @@ const toast = useToastStore()
 const product = useProductStore()
 
 const { user } = useUserStore()
-const { deleteOrder } = useOrder()
+const { deleteOrder, pay, paying } = useOrder()
 
 onMounted(async () => {
   orderId.value = route.params.id as string
@@ -99,4 +112,12 @@ const handleDelete = async () => {
 const handleOrderUpdated = (updatedOrder: Order) => {
   order.value = updatedOrder
 }
+
+const handleRepayment = async () => {
+  const newOrder = await pay(order.value._id, order.value.totalCost)
+  order.value = newOrder
+  updateCounter.value++
+}
+
+watch(order, () => {}, { deep: true })
 </script>
