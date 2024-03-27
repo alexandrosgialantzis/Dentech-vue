@@ -119,7 +119,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, onMounted, ref, defineEmits, computed, watchEffect } from 'vue'
+import { defineProps, onMounted, ref, defineEmits, computed } from 'vue'
 import { MessageResponse, Order, OrderResponse, Product, User } from '../../types/interfaces'
 import { ToastConclusion, ToastHeader } from '../../types/enums'
 import { useToastStore } from '../../stores/toastStore'
