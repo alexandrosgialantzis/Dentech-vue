@@ -65,7 +65,7 @@ const loading = ref(false)
 const search = ref<string | OrderStatus>('')
 const creating = ref(false)
 const status = ref<null | OrderStatus>(null)
-const fetchedOrders = ref<Order[]>()
+const unSortedOrders = ref<Order[]>()
 
 const toast = useToastStore()
 const { user } = useUserStore()
@@ -73,8 +73,8 @@ const { user } = useUserStore()
 const { count, handleOrders, orders } = useOrder()
 
 onMounted(async () => {
-  fetchedOrders.value = await getOrders()
-  handleOrders(fetchedOrders.value)
+  unSortedOrders.value = await getOrders()
+  handleOrders(unSortedOrders.value)
 })
 
 onBeforeUnmount(() => {
@@ -110,24 +110,27 @@ const getOrders = async () => {
 }
 
 const changeStaus = async (st?: OrderStatus) => {
-  search.value = st ?? null
   status.value = st ?? null
-  const res = await getOrders()
+  const res = st ? unSortedOrders.value.filter((ord) => ord.status === st) : unSortedOrders.value
   handleOrders(res)
 }
 
 const searchOrders = async (srch: string) => {
   search.value = srch ?? null
   const res = await getOrders()
-  handleOrders(res)
+  if (status.value) {
+    handleOrders(res.filter((ord) => ord.status === status.value))
+  } else {
+    handleOrders(res)
+  }
 }
 
 const createOrder = async (order: Order) => {
   try {
     creating.value = true
     const res = await orderHttp.post<OrderResponse<Order>>('/create-order', order)
-    fetchedOrders.value.push(res.data.order)
-    handleOrders(fetchedOrders.value)
+    unSortedOrders.value.push(res.data.order)
+    handleOrders(unSortedOrders.value)
     const elementToClick = document.querySelector('.btn-close') as HTMLElement | null
 
     if (elementToClick) {
