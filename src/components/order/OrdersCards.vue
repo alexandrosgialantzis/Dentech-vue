@@ -66,7 +66,8 @@
                     <span class="text-dark">{{ order.totalCost.toFixed(2) }}€</span>
                   </li>
                   <li class="list-group-item text-muted">
-                    Εξοφλημένο ποσό: <span class="text-dark">{{ order.paid.toFixed(2) }}€</span>
+                    Εξοφλημένο ποσό:
+                    <span class="text-dark">{{ order.paid ? order.paid.toFixed(2) : 0 }}€</span>
                   </li>
                   <li class="list-group-item text-muted">
                     Μη εξοφλημένο ποσό:
