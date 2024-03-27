@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-row flex-wrap justify-content-start align-items-center">
-    {{ content ?? 'Συνολο' }}:
-    <span class="badge bg-success fs-6 fw-normal ms-1 p-2">{{ length }} {{ entity }}</span>
+    <span class="me-1">{{ content ?? 'Συνολο' }}:</span>
+    <span class="badge bg-success fs-6 fw-normal p-2">{{ length }} {{ entity }}</span>
   </div>
 </template>
 

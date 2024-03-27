@@ -20,18 +20,18 @@
         data-bs-parent="#accordionExample"
       >
         <div class="accordion-body">
-          <div class="d-flex">
+          <div class="d-flex flex-wrap">
             <total-count
               :length="orders?.groupedOrders[month].length"
               :content="'Παραγγελίες'"
               :entity="'σύνολο'"
-              class="border rounded p-1 shadow"
+              class="border rounded p-1 shadow me-2 mt-custom"
             />
             <total-count
               :length="getPaidByMonth(month).value"
               :content="'Συνολικό εξοφλημένο πόσο'"
               :entity="'€'"
-              class="ms-2 border rounded p-1 shadow"
+              class="border rounded p-1 shadow"
             />
           </div>
           <div class="row mt-3">
@@ -169,5 +169,11 @@ const getPaidByMonth = (month: string) => {
   background: transparent !important;
   text-decoration: underline;
   transition: all 0.19s linear;
+}
+
+@media (max-width: 650px) {
+  .mt-custom {
+    margin-bottom: 0.25rem !important;
+  }
 }
 </style>
