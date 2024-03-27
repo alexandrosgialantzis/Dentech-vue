@@ -11,6 +11,8 @@
       <repayment-comp
         :paying="paying"
         :content="'Εξόφληση παραγγελίας'"
+        :total="order.totalCost"
+        :paid="order.paid"
         class="ms-1 mt-1"
         @pay="handleRepayment"
         v-if="user.role === Roles.ADMIN"

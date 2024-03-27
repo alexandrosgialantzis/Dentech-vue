@@ -1,5 +1,10 @@
 <template>
-  <button type="button" class="btn btn-update" @click="handlePay" :disabled="paying">
+  <button
+    type="button"
+    class="btn btn-update"
+    @click="handlePay"
+    :disabled="paying || total === paid"
+  >
     <span v-if="!paying"
       >{{ content ?? ''
       }}<i :class="['fa-solid fa-circle-dollar-to-slot', `${content ? 'ms-1' : ''}`]"></i
@@ -13,6 +18,8 @@ import ButtonContent from './ButtonContent.vue'
 
 defineProps<{
   paying: boolean
+  total: number
+  paid: number
   content?: string
 }>()
 

@@ -121,7 +121,14 @@
                 </ul>
                 <div class="card-footer d-flex justify-content-between align-items-center">
                   <router-link :to="`/order/${order._id}`">Δείτε τη παραγγελία</router-link>
-                  <repayment-comp :paying="paying" @pay="emitPay(order._id, order.totalCost)" />
+                  <repayment-comp
+                    :key="order._id"
+                    :paying="payingStates[order._id] || false"
+                    :total="order.totalCost"
+                    :paid="order.paid"
+                    @pay="emitPay(order._id, order.totalCost)"
+                    v-if="user.role === Roles.ADMIN"
+                  />
                 </div>
               </div>
             </div>
@@ -134,20 +141,27 @@
 
 <script lang="ts" setup>
 import { GroupedOrdersResult, Product } from '../../types/interfaces'
-import { computed, defineProps } from 'vue'
+import { computed, defineProps, ref } from 'vue'
 import { formattedDate } from '../../utils/date'
 import { OrderStatus, Roles } from '../../types/enums'
 import RepaymentComp from '../../components/RepaymentComp.vue'
 import TotalCount from '../../components/TotalCount.vue'
 import { useOrder } from '../../composables/useOrder'
+import { useUserStore } from '../../stores/userStore'
 
-const { pay, paying } = useOrder()
+const { pay } = useOrder()
+
+const { user } = useUserStore()
 
 const emit = defineEmits(['pay'])
 
+const payingStates = ref({})
+
 const emitPay = async (id: string, total: number) => {
+  payingStates.value[id] = true
   const order = await pay(id, total)
   emit('pay', order)
+  payingStates.value[id] = false
 }
 const props = defineProps<{
   orders: GroupedOrdersResult
