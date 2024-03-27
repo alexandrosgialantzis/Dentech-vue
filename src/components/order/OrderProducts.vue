@@ -20,7 +20,7 @@
             `${products?.length < 2 ? 'w-100' : ''}`
           ]"
         >
-          <div v-if="prod.name">
+          <div v-if="(prod.id as Product)!?._id">
             <p :class="[role === Roles.ADMIN ? 'mb-1' : 'mb-0', 'text-center', 'text-muted']">
               Ονομα:
               <span class="text-dark text-capitalize w-100">{{

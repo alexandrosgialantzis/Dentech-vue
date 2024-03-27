@@ -80,7 +80,7 @@
                         v-for="product in order?.products"
                         :key="(product.id as Product)!?._id"
                       >
-                        <div v-if="product.name">
+                        <div v-if="(product.id as Product)!?._id">
                           <router-link
                             v-if="role === Roles.ADMIN"
                             :to="`/product/${(product.id as Product)!?._id}`"
@@ -97,7 +97,7 @@
                           >
                         </div>
                         <span
-                          class="badge rounded-pill bg-danger badge-link me-1 mt-1 fs-6 text-capitalize fw-normal"
+                          class="badge rounded-pill bg-danger badge-link mt-1 me-1 fs-6 text-capitalize fw-normal"
                           v-else
                           >Διαγραμένο προιόν</span
                         >
