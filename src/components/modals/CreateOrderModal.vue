@@ -52,8 +52,8 @@
             <div class="col-12" v-if="products?.length">
               <label class="form-label">Προϊόντα: <span class="text-danger fs-6">*</span></label>
               <div class="w-100">
-                <div class="row justify-content-between">
-                  <div v-for="(product, index) in products" :key="index" class="py-1 col-md-4">
+                <div class="d-flex justify-content-between flex-column">
+                  <div v-for="(product, index) in products" :key="index" class="py-1 w-100">
                     <div
                       class="p-2 w-100 d-flex align-items-center justify-content-between border rounded shadow"
                     >
