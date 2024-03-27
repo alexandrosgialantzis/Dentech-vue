@@ -272,10 +272,6 @@ const updateOrder = async () => {
     productsToRemove.value = []
   }
 }
-
-watchEffect(() => {
-  console.log('order prop updated in child:', order)
-})
 </script>
 
 <style scoped>
