@@ -23,19 +23,23 @@
             class="row g-3"
             v-if="!doctors.loading && docs?.length && products?.length && !product.loading"
           >
-            <div class="col-md-4">
+            <div class="col-md-3">
               <label class="form-label"
                 >Ημ/νία παραλαβής: <span class="text-danger fs-6">*</span></label
               >
               <input type="text" class="form-control" v-model="takenDate" />
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
               <label class="form-label">Ημ/νία αποστολής:</label>
               <input type="text" class="form-control" v-model="sendDate" />
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
               <label class="form-label">Εξοφλημένο ποσό: </label>
               <input type="number" class="form-control" v-model="paid" @input="handleUnPaid()" />
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Ασθενής: </label>
+              <input type="text" class="form-control" />
             </div>
             <div class="col-6">
               <label class="form-label">Συνολικό κόστος: </label>
@@ -204,6 +208,7 @@ const add = (id: string) => {
     productsToAdd.value.push({ id, amount: 1 } as ProductsOnOrder)
     productsToAddIds.value.push(id)
     totalCost.value += prod.price
+    handleUnPaid()
     return
   }
 
