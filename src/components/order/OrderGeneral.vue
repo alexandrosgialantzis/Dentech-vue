@@ -4,7 +4,7 @@
       >Γενικές πληροφορίες<i class="fa-solid fa-info ms-1"></i
     ></span>
     <div class="card shadow">
-      <div class="card-body d-flex flex-wrap justify-content-between">
+      <div class="card-body d-grid">
         <h5 class="card-title mb-1 w-100">
           Παραγγελία νούμερο
           <span class="text-primary">{{
@@ -44,7 +44,7 @@
           Μη εξοφλημένο:
           <span class="text-dark">{{ order?.unPaid.toFixed(2) }}€</span>
         </p>
-        <p class="mb-0 mx-1 mt-1 text-muted">
+        <p class="m-1 text-muted">
           Τελευταία ενημέρωση:
           <span class="text-dark"
             >{{ formattedDate(order?.updatedAt) }}
@@ -62,7 +62,11 @@
             <i class="fa-solid fa-check ms-1 text-success" v-else></i>
           </span>
         </p>
-        <p class="mx-1 mb-0 w-100 text-muted">
+        <p class="text-muted m-1">
+          Ασθενής:
+          <span class="text-dark">{{ order?.client }}</span>
+        </p>
+        <p class="mb-0 w-100 text-muted m-1">
           Περιγραφή:
           <span class="ms-1 text-dark fs-6">
             {{ order?.description || 'Δεν υπάρχει περιγραφή' }}</span

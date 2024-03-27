@@ -102,6 +102,7 @@ export interface Order {
   updatedAt: Date
   numberOfOrder: string
   status: OrderStatus
+  client: string
 }
 
 export interface OrdersResponse<T> extends TotalCount {

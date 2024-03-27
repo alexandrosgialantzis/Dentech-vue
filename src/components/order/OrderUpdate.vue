@@ -23,7 +23,7 @@
           </div>
           <div class="col-md-3">
             <label class="form-label">Ασθενής: </label>
-            <input type="number" class="form-control" />
+            <input type="text" class="form-control" v-model="localOrder.client" />
           </div>
           <div class="col-3">
             <label class="form-label">Συνολικό κόστος: </label>
@@ -198,7 +198,6 @@ const remove = (id: string) => {
   const i = productsToAdd.value.findIndex((prod) => prod.id === id)
 
   const prod = product.products.find((prod) => prod._id === id)
-
   productsToAdd.value[i].amount -= 1
 
   totalCost.value -= prod.price
@@ -242,7 +241,8 @@ const updateOrder = async () => {
       dentist: selectedDoc.value,
       description: localOrder.value.description,
       remove: productsToRemove.value,
-      add: productsToAdd.value
+      add: productsToAdd.value,
+      client: localOrder.value.client
     }
 
     const res = await orderHttp.patch<OrderResponse<Order>>(

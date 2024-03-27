@@ -4,7 +4,7 @@
       >Οδοντίατρος<i class="fa-solid fa-stethoscope ms-1"></i
     ></span>
     <div class="card shadow" v-if="dentist">
-      <div class="card-body d-flex flex-wrap justify-content-between">
+      <div class="card-body d-grid">
         <p class="m-1 text-muted">
           Oν/Επ:
           <span class="text-dark">{{ dentist?.fullName }} </span>

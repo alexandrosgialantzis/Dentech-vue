@@ -39,7 +39,7 @@
             </div>
             <div class="col-md-3">
               <label class="form-label">Ασθενής: </label>
-              <input type="text" class="form-control" />
+              <input type="text" class="form-control" v-model="client" />
             </div>
             <div class="col-6">
               <label class="form-label">Συνολικό κόστος: </label>
@@ -172,6 +172,7 @@ const productsToAdd = ref<ProductsOnOrder[]>([])
 const productsToAddIds = ref([])
 const unPaid = ref(0)
 const totalCost = ref(0)
+const client = ref('')
 
 const toast = useToastStore()
 const product = useProductStore()
@@ -265,7 +266,8 @@ const createOrder = async () => {
       paid: paid.value,
       dentist: selectedDoctor.value,
       description: description.value,
-      products: productsToAdd.value
+      products: productsToAdd.value,
+      client: client.value
     }
 
     emit('create', order)
