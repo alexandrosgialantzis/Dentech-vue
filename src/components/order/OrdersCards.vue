@@ -78,19 +78,28 @@
                       <span
                         class="text-primary"
                         v-for="product in order?.products"
-                        :key="(product.id as Product)._id"
+                        :key="(product.id as Product)!?._id"
                       >
-                        <router-link
-                          v-if="role === Roles.ADMIN"
-                          :to="`/product/${(product.id as Product)._id}`"
-                          class="badge bg-primary badge-link me-1 mt-1 fs-6 fw-normal prod-link"
-                          ><span class="text-capitalize">{{ (product.id as Product).name }}</span>
-                          x{{ product.amount }}</router-link
-                        >
+                        <div v-if="product.name">
+                          <router-link
+                            v-if="role === Roles.ADMIN"
+                            :to="`/product/${(product.id as Product)!?._id}`"
+                            class="badge bg-primary badge-link me-1 mt-1 fs-6 fw-normal prod-link"
+                            ><span class="text-capitalize">{{
+                              (product.id as Product)!?.name
+                            }}</span>
+                            x{{ product.amount }}</router-link
+                          >
+                          <span
+                            class="badge rounded-pill bg-primary badge-link me-1 mt-1 fs-6 text-capitalize fw-normal"
+                            v-else
+                            >{{ product.name }}</span
+                          >
+                        </div>
                         <span
-                          class="badge rounded-pill bg-primary badge-link me-1 mt-1 fs-6 text-capitalize fw-normal"
+                          class="badge rounded-pill bg-danger badge-link me-1 mt-1 fs-6 text-capitalize fw-normal"
                           v-else
-                          >{{ product.name }}</span
+                          >Διαγραμένο προιόν</span
                         >
                       </span>
                     </p>
@@ -109,11 +118,13 @@
                   <li class="list-group-item text-muted" v-if="role === Roles.ADMIN">
                     Οδοντίατρος:
                     <router-link
+                      v-if="order.dentist"
                       :to="`/profile/${order.dentist._id}`"
                       class="prod-link bagde bg-primary text-light rounded p-1"
                     >
-                      {{ order.dentist.fullName }} <i class="fa-solid fa-stethoscope ms-1"></i>
+                      {{ order.dentist?.fullName }} <i class="fa-solid fa-stethoscope ms-1"></i>
                     </router-link>
+                    <not-found-entity message="Δεν βρέθηκε οδοντίατρος!" v-else />
                   </li>
                   <li class="list-group-item text-muted">
                     Ασθενής: <span class="text-dark">{{ order.client ?? '--' }}</span>
@@ -148,6 +159,7 @@ import RepaymentComp from '../../components/RepaymentComp.vue'
 import TotalCount from '../../components/TotalCount.vue'
 import { useOrder } from '../../composables/useOrder'
 import { useUserStore } from '../../stores/userStore'
+import NotFoundEntity from '../NotFoundEntity.vue'
 
 const { pay } = useOrder()
 

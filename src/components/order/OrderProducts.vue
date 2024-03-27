@@ -20,16 +20,25 @@
             `${products?.length < 2 ? 'w-100' : ''}`
           ]"
         >
-          <p :class="[role === Roles.ADMIN ? 'mb-1' : 'mb-0', 'text-center', 'text-muted']">
-            Ονομα:
-            <span class="text-dark text-capitalize w-100">{{ (prod?.id as Product).name }}</span>
-            <span class="text-dark text-capitalize w-100 ms-1">x{{ prod.amount }}</span>
-          </p>
-          <router-link
-            :to="`/product/${(prod?.id as Product)._id}`"
-            class="text-center w-100 d-block"
-            v-if="role === Roles.ADMIN"
-            >Δείτε το προιόν</router-link
+          <div v-if="prod.name">
+            <p :class="[role === Roles.ADMIN ? 'mb-1' : 'mb-0', 'text-center', 'text-muted']">
+              Ονομα:
+              <span class="text-dark text-capitalize w-100">{{
+                (prod?.id as Product)!?.name
+              }}</span>
+              <span class="text-dark text-capitalize w-100 ms-1">x{{ prod.amount }}</span>
+            </p>
+            <router-link
+              :to="`/product/${(prod?.id as Product)!?._id}`"
+              class="text-center w-100 d-block"
+              v-if="role === Roles.ADMIN"
+              >Δείτε το προιόν</router-link
+            >
+          </div>
+          <span
+            class="badge rounded-pill bg-danger badge-link m1 fs-6 text-capitalize fw-normal"
+            v-else
+            >Διαγραμένο προιόν</span
           >
         </div>
       </div>

@@ -143,7 +143,7 @@ const takenDateToString = ref('')
 const docs = ref<null | User[]>(null)
 const productsToAdd = ref(
   order.products.map((p) => {
-    return { id: (p.id as Product)._id, amount: p.amount }
+    return { id: (p.id as Product)!?._id, amount: p.amount }
   })
 )
 const selectedDoc = ref(order?.dentist!?._id)

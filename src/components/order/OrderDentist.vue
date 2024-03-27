@@ -37,7 +37,7 @@
         </router-link>
       </div>
     </div>
-    <div class="card shadow pb-3" v-else>
+    <div class="card shadow" v-else>
       <not-found-entity :message="'Δεν βρέθηκε ο ιατρός'" />
     </div>
   </div>
