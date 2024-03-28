@@ -76,27 +76,29 @@
                   <li class="list-group-item">
                     <div class="text-muted mb-0">
                       Προιόντα:
-                      <div
-                        class="text-primary d-inline"
-                        v-for="product in order?.products"
-                        :key="(product.id as Product)!?._id"
-                      >
-                        <span v-if="role === Roles.ADMIN" class="me-2 my-1">
-                          <router-link
-                            :to="`/product/${(product.id as Product)!?._id}`"
-                            class="text-primary prod-link me-1"
-                            >{{ (product.id as Product)!?.name }}
-                          </router-link>
-                          <i class="fa-solid fa-xmark fs-6"></i>
-                          {{ product.amount }}
-                        </span>
-                        <p class="d-inline mb-1 me-1 text-light" v-else>
-                          <span class="rounded bg-primary me-1 fs-5 text-capitalize fw-normal p-1"
-                            >{{ (product.id as Product)!?.name }}
-                            <i class="fa-solid fa-xmark text-light fs-6 mx-1 h-100"></i>
+                      <div class="d-inline-flex flex-wrap">
+                        <div
+                          class="text-primary mb-2"
+                          v-for="product in order?.products"
+                          :key="(product.id as Product)!?._id"
+                        >
+                          <span v-if="role === Roles.ADMIN" class="me-2 my-1">
+                            <router-link
+                              :to="`/product/${(product.id as Product)!?._id}`"
+                              class="text-primary prod-link me-1"
+                              >{{ (product.id as Product)!?.name }}
+                            </router-link>
+                            <i class="fa-solid fa-xmark fs-6"></i>
                             {{ product.amount }}
                           </span>
-                        </p>
+                          <p class="d-inline me-1 text-light mb-1" v-else>
+                            <span class="rounded bg-primary me-1 fs-5 fw-normal p-1"
+                              >{{ (product.id as Product)!?.name }}
+                              <i class="fa-solid fa-xmark text-light fs-6 mx-1 h-100"></i>
+                              {{ product.amount }}
+                            </span>
+                          </p>
+                        </div>
                       </div>
                       <span
                         class="dadge bg-danger p-1 text-light rounded"
