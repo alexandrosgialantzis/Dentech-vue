@@ -75,9 +75,9 @@
                   </li>
                   <li class="list-group-item">
                     <div class="text-muted mb-0 d-inline-flex flex-wrap">
-                      Προιόντα:
+                      <span class="me-1">Προιόντα:</span>
                       <div
-                        class="text-primary ms-1"
+                        class="text-primary"
                         v-for="product in order?.products"
                         :key="(product.id as Product)!?._id"
                       >
