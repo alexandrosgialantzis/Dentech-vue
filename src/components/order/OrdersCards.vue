@@ -123,7 +123,7 @@
                     <router-link
                       v-if="order.dentist"
                       :to="`/profile/${order.dentist._id}`"
-                      class="prod-link bagde bg-primary text-light rounded p-1"
+                      class="prod-link text-primary p-1"
                     >
                       {{ order.dentist?.fullName }} <i class="fa-solid fa-stethoscope ms-1"></i>
                     </router-link>
