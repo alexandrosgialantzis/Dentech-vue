@@ -74,21 +74,22 @@
                     <span class="text-dark">{{ order.unPaid.toFixed(2) }}€</span>
                   </li>
                   <li class="list-group-item">
-                    <span class="text-muted mb-0">
+                    <div class="text-muted mb-0">
                       Προιόντα:
-                      <span
-                        class="text-primary"
+                      <div
+                        class="text-primary d-inline"
                         v-for="product in order?.products"
                         :key="(product.id as Product)!?._id"
                       >
-                        <p v-if="role === Roles.ADMIN" class="mb-1 me-2 text-primary d-inline">
+                        <span v-if="role === Roles.ADMIN" class="me-2 my-1">
                           <router-link
                             :to="`/product/${(product.id as Product)!?._id}`"
-                            class="bg-primary fw-normal prod-link p-1 rounded text-light"
-                            >{{ (product.id as Product)!?.name }}</router-link
-                          ><i class="fa-solid fa-xmark mx-1 text-secondary fs-6 mt-1"></i
-                          >{{ product.amount }}
-                        </p>
+                            class="text-primary prod-link me-1"
+                            >{{ (product.id as Product)!?.name }}
+                          </router-link>
+                          <i class="fa-solid fa-xmark fs-6"></i>
+                          {{ product.amount }}
+                        </span>
                         <p class="d-inline mb-1 me-1 text-light" v-else>
                           <span class="rounded bg-primary me-1 fs-5 text-capitalize fw-normal p-1"
                             >{{ (product.id as Product)!?.name }}
@@ -96,13 +97,13 @@
                             {{ product.amount }}
                           </span>
                         </p>
-                      </span>
+                      </div>
                       <span
                         class="dadge bg-danger p-1 text-light rounded"
                         v-if="!order.products.length"
                         >Δεν βρέθηκαν προιόντα</span
                       >
-                    </span>
+                    </div>
                   </li>
                   <li class="list-group-item text-muted">
                     Κατάσταση:
