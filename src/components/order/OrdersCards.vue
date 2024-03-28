@@ -42,9 +42,7 @@
             >
               <div class="card shadow">
                 <div class="card-header">
-                  <h5 class="mb-0">
-                    Παραγγελία νούμερο <span class="text-primary">{{ order.numberOfOrder }}</span>
-                  </h5>
+                  Παραγγελία νούμερο <span class="text-primary">{{ order.numberOfOrder }}</span>
                 </div>
                 <ul class="list-group list-group-flush">
                   <li class="list-group-item text-muted">
