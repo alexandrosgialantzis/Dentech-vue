@@ -62,6 +62,7 @@ const deleteAccount = async () => {
   try {
     deleting.value = true
     const res = await userHttp.delete<UserResponse<User>>(`/${userStore.user.userId}/delete-user`)
+    userStore.logout()
     toast.showToast(res.data.message, ToastHeader.SUCCESS)
     router.push('/auth')
   } catch (error) {
