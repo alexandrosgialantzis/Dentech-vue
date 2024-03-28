@@ -76,9 +76,14 @@
                   <li class="list-group-item">
                     <div class="text-muted mb-0">
                       Προιόντα:
-                      <div class="d-inline-flex flex-wrap">
+                      <div
+                        :class="[
+                          'd-inline-flex flex-wrap',
+                          `${role === Roles.ADMIN ? '' : 'mb-1'}`
+                        ]"
+                      >
                         <div
-                          class="text-primary mb-2"
+                          class="text-primary"
                           v-for="product in order?.products"
                           :key="(product.id as Product)!?._id"
                         >
