@@ -51,12 +51,7 @@
   <spinner-component v-if="loading" :useMarginTop="true" />
   <div class="d-flex flex-column justify-content-center mt-1" v-if="!loading && users?.length">
     <total-count :length="users.length" :entity="'χρήστες'" />
-    <div
-      :class="[
-        'd-flex flex-row flex-wrap',
-        `justify-content-${users.length > 2 ? 'between' : 'center'}`
-      ]"
-    >
+    <div :class="['row', `justify-content-${users.length > 2 ? 'between' : 'center'}`]">
       <users-card :users="users" />
     </div>
   </div>

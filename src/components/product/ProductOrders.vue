@@ -32,7 +32,7 @@
           <span class="text-dark">{{ order?.unPaid.toFixed(2) }}€</span>
         </p>
       </div>
-      <div class="card-footer p-2">
+      <div class="card-footer p-2 text-center">
         <router-link :to="`/order/${order?._id}`">Δείτε τη παραγγελία</router-link>
       </div>
     </div>

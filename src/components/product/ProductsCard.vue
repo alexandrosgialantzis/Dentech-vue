@@ -2,11 +2,11 @@
   <div class="row justify-content-between">
     <div class="p-1 col-lg-4" v-for="(product, i) in products" :key="i">
       <div class="card shadow">
-        <div class="card-header">Προιόν {{ i + 1 }}.</div>
+        <div class="card-header text-muted">
+          Όνομα:
+          <span class="text-dark">{{ product?.name }} (Προιόν {{ i + 1 }}) </span>
+        </div>
         <ul class="list-group list-group-flush">
-          <li class="list-group-item text-muted">
-            Όνομα: <span class="text-dark text-capitalize">{{ product?.name }}</span>
-          </li>
           <li class="list-group-item text-muted">
             Tιμή: <span class="text-dark">{{ product?.price.toFixed(2) }}€</span>
           </li>

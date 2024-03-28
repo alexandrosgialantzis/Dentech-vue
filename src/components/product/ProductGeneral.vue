@@ -38,7 +38,7 @@
         <span class="text-primary" v-else>--</span>
       </p>
     </div>
-    <div class="card-footer">
+    <div class="card-footer text-center">
       <router-link :to="`/profile/${product?.createdBy?._id}`">Προφίλ</router-link>
     </div>
   </div>
