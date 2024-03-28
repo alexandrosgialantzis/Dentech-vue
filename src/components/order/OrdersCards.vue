@@ -81,18 +81,25 @@
                         v-for="product in order?.products"
                         :key="(product.id as Product)!?._id"
                       >
-                        <router-link
+                        <p
                           v-if="role === Roles.ADMIN"
-                          :to="`/product/${(product.id as Product)!?._id}`"
-                          class="badge bg-primary badge-link me-1 mt-1 fs-6 fw-normal prod-link"
-                          ><span class="text-capitalize">{{ (product.id as Product)!?.name }}</span>
-                          x{{ product.amount }}</router-link
+                          class="m-0 d-flex align-items-center text-primary fs-5"
                         >
-                        <span
-                          class="badge rounded-pill bg-primary badge-link me-1 mt-1 fs-6 text-capitalize fw-normal"
-                          v-else
-                          >{{ product.name }}</span
-                        >
+                          <router-link
+                            :to="`/product/${(product.id as Product)!?._id}`"
+                            class="badge bg-primary badge-link me-1 mt-1 fs-6 fw-normal prod-link"
+                            >{{ (product.id as Product)!?.name }}</router-link
+                          >
+                          <i class="fa-solid fa-xmark mx-1 text-secondary fs-6 mt-1"></i>
+                          {{ product.amount }}
+                        </p>
+                        <p class="d-inline mb-1 me-1 text-light" v-else>
+                          <span class="rounded bg-primary me-1 fs-5 text-capitalize fw-normal p-1"
+                            >{{ (product.id as Product)!?.name }}
+                            <i class="fa-solid fa-xmark text-light fs-6 mx-1 h-100"></i>
+                            {{ product.amount }}
+                          </span>
+                        </p>
                       </span>
                       <span
                         class="dadge bg-danger p-1 text-light rounded"
