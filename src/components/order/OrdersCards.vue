@@ -76,12 +76,7 @@
                   <li class="list-group-item">
                     <div class="text-muted mb-0">
                       Προιόντα:
-                      <div
-                        :class="[
-                          'd-inline-flex flex-wrap',
-                          `${role === Roles.ADMIN ? '' : 'mb-1'}`
-                        ]"
-                      >
+                      <div class="d-inline-flex flex-wrap'">
                         <div
                           class="text-primary"
                           v-for="product in order?.products"
@@ -93,13 +88,13 @@
                               class="text-primary prod-link me-1"
                               >{{ (product.id as Product)!?.name }}
                             </router-link>
-                            <i class="fa-solid fa-xmark fs-6"></i>
+                            <i class="fa-solid fa-xmark ms-1 fs-6"></i>
                             {{ product.amount }}
                           </span>
-                          <p class="d-inline me-1 text-light mb-1" v-else>
-                            <span class="rounded bg-primary me-1 fs-5 fw-normal p-1"
+                          <p class="d-inline me-1 mb-1" v-else>
+                            <span class="me-1 fw-normal p-1"
                               >{{ (product.id as Product)!?.name }}
-                              <i class="fa-solid fa-xmark text-light fs-6 mx-1 h-100"></i>
+                              <i class="fa-solid fa-xmark fs-6 ms-1 h-100"></i>
                               {{ product.amount }}
                             </span>
                           </p>
