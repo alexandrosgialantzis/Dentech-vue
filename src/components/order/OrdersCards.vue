@@ -81,17 +81,13 @@
                         v-for="product in order?.products"
                         :key="(product.id as Product)!?._id"
                       >
-                        <p
-                          v-if="role === Roles.ADMIN"
-                          class="m-0 d-flex align-items-center text-primary fs-5"
-                        >
+                        <p v-if="role === Roles.ADMIN" class="mb-1 me-2 text-primary d-inline">
                           <router-link
                             :to="`/product/${(product.id as Product)!?._id}`"
-                            class="badge bg-primary badge-link me-1 mt-1 fs-6 fw-normal prod-link"
+                            class="bg-primary fw-normal prod-link p-1 rounded text-light"
                             >{{ (product.id as Product)!?.name }}</router-link
-                          >
-                          <i class="fa-solid fa-xmark mx-1 text-secondary fs-6 mt-1"></i>
-                          {{ product.amount }}
+                          ><i class="fa-solid fa-xmark mx-1 text-secondary fs-6 mt-1"></i
+                          >{{ product.amount }}
                         </p>
                         <p class="d-inline mb-1 me-1 text-light" v-else>
                           <span class="rounded bg-primary me-1 fs-5 text-capitalize fw-normal p-1"
