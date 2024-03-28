@@ -76,7 +76,7 @@
                   <li class="list-group-item">
                     <div class="text-muted mb-0">
                       Προιόντα:
-                      <div class="d-inline-flex flex-wrap'">
+                      <div class="d-inline-flex flex-wrap">
                         <div
                           class="text-primary"
                           v-for="product in order?.products"
