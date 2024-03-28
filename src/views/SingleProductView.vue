@@ -1,12 +1,23 @@
 <template>
   <spinner-component v-if="loading" :use-margin-top="true" />
   <not-found-entity v-if="!loading && !product" :message="'Δεν βρέθηκε το προιόν'" />
+  <button
+    type="button"
+    class="btn btn-danger"
+    data-bs-toggle="modal"
+    data-bs-target="#staticBackdrop"
+    :disabled="deleting"
+    v-if="!loading && product"
+  >
+    <span v-if="!loading">Διαγραφή<i class="fa-solid fa-trash ms-1"></i></span>
+    <button-content v-else />
+  </button>
+  <delete-modal
+    @delete="handleDelete"
+    :content="'Σίγουρα θέλετε να διαγράψετε το προιόν;'"
+    :deleting="deleting"
+  />
   <div class="row" v-if="!loading && product">
-    <delete-component
-      @handle-delete="handleDelete"
-      :content="'Διαγραφη προιόντος'"
-      :loading="deleting"
-    />
     <div class="col-lg-4 p-2 mb-2">
       <div class="mb-2">
         <product-general :product="product" />
@@ -19,7 +30,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { Product, ProductResponse } from '../types/interfaces'
 import { useRoute, useRouter } from 'vue-router'
 import { productHttp } from '../services/productHttp'
@@ -29,9 +40,10 @@ import SpinnerComponent from '../components/SpinnerComponent.vue'
 import NotFoundEntity from '../components/NotFoundEntity.vue'
 import ProductGeneral from '../components/product/ProductGeneral.vue'
 import ProductOrders from '../components/product/ProductOrders.vue'
-import DeleteComponent from '../components/DeleteComponent.vue'
 import ProductUpdate from '../components/product/ProductUpdate.vue'
 import { useProductStore } from '../stores/productStore'
+import DeleteModal from '../components/modals/DeleteModal.vue'
+import ButtonContent from '../components/ButtonContent.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -47,6 +59,13 @@ const productStore = useProductStore()
 onMounted(async () => {
   productId.value = route.params.id as string
   await getProduct()
+})
+
+onBeforeUnmount(() => {
+  const elementToRemove = document.querySelector('.modal-backdrop')
+  if (elementToRemove) {
+    elementToRemove.parentNode.removeChild(elementToRemove)
+  }
 })
 
 const getProduct = async () => {

@@ -25,14 +25,20 @@
         <div class="border mt-5 p-2 rounded bg-white">
           <h4 class="text-danger">Διαγραφή λογαριασμού</h4>
           <button
-            class="btn btn-outline-danger w-100"
-            :disabled="deleting || changing"
-            @click="emitDelete"
+            type="button"
+            class="btn btn-danger w-100"
+            data-bs-toggle="modal"
+            data-bs-target="#staticBackdrop"
+            :disabled="deleting"
           >
-            <button-content :use-red="true" v-if="deleting" /><span v-else
-              >Διαγραφή <i class="fa-solid fa-trash"></i>
-            </span>
+            <span v-if="!deleting">Διαγραφή<i class="fa-solid fa-trash ms-1"></i></span>
+            <button-content v-else />
           </button>
+          <delete-modal
+            @delete="emitDelete"
+            :content="'Σίγουρα θέλετε να διαγράψετε το λογαριασμό σας;'"
+            :deleting="deleting"
+          />
         </div>
       </div>
     </div>
@@ -40,8 +46,16 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { onBeforeUnmount, ref } from 'vue'
 import ButtonContent from '../ButtonContent.vue'
+import DeleteModal from '../modals/DeleteModal.vue'
+
+onBeforeUnmount(() => {
+  const elementToRemove = document.querySelector('.modal-backdrop')
+  if (elementToRemove) {
+    elementToRemove.parentNode.removeChild(elementToRemove)
+  }
+})
 
 defineProps<{
   changing: boolean

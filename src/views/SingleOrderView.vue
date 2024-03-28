@@ -2,11 +2,20 @@
   <spinner-component v-if="loading" :use-margin-top="true" />
   <div class="max-w1550" v-if="!loading && order">
     <div class="d-flex">
-      <delete-component
-        :content="'Διαγραφή παραγγελίας'"
-        @handle-delete="handleDelete"
-        :loading="deleting"
-        v-if="user.role === Roles.ADMIN"
+      <button
+        type="button"
+        class="btn btn-danger mt-1"
+        data-bs-toggle="modal"
+        data-bs-target="#staticBackdrop"
+        :disabled="deleting"
+      >
+        <span v-if="!deleting">Διαγραφή<i class="fa-solid fa-trash ms-1"></i></span>
+        <button-content v-else />
+      </button>
+      <delete-modal
+        @delete="handleDelete"
+        :content="'Σίγουρα θέλετε να διαγράψετε το παραγγελία σας;'"
+        :deleting="deleting"
       />
       <repayment-comp
         :paying="paying"
@@ -35,7 +44,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { orderHttp } from '../services/orderHttp'
 import { Order, OrderResponse, Product } from '../types/interfaces'
 import { useRoute, useRouter } from 'vue-router'
@@ -48,10 +57,11 @@ import OrderDentist from '../components/order/OrderDentist.vue'
 import OrderProducts from '../components/order/OrderProducts.vue'
 import OrderUpdate from '../components/order/OrderUpdate.vue'
 import NotFoundEntity from '../components/NotFoundEntity.vue'
-import DeleteComponent from '../components/DeleteComponent.vue'
+import DeleteModal from '../components/modals/DeleteModal.vue'
 import { useOrder } from '../composables/useOrder'
 import { useUserStore } from '../stores/userStore'
 import RepaymentComp from '../components/RepaymentComp.vue'
+import ButtonContent from '../components/ButtonContent.vue'
 
 const orderId = ref('')
 const order = ref<null | Order>(null)
@@ -84,6 +94,13 @@ onMounted(async () => {
   }
 
   products.value = product?.products
+})
+
+onBeforeUnmount(() => {
+  const elementToRemove = document.querySelector('.modal-backdrop')
+  if (elementToRemove) {
+    elementToRemove.parentNode.removeChild(elementToRemove)
+  }
 })
 
 const getSingleOrder = async (id: string) => {
