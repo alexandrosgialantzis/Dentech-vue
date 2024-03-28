@@ -15,7 +15,7 @@
       >
         Δημιουργεία παραγγελίας <i class="fa-solid fa-plus ms-1"></i>
       </button>
-      <create-order-modal @create="createOrder" :creating="creating" />
+      <create-order-modal @create="createOrder" />
     </div>
     <status-filter @change-status="changeStaus" :status="status" />
   </div>
@@ -44,14 +44,13 @@ import { onBeforeUnmount, onMounted, ref } from 'vue'
 import SearchComponent from '../components/SearchComponent.vue'
 import { orderHttp } from '../services/orderHttp'
 import { ToastHeader, ToastConclusion, OrderStatus, Roles } from '../types/enums'
-import { MessageResponse, Order, OrderResponse, OrdersResponse } from '../types/interfaces'
+import { Order, OrdersResponse } from '../types/interfaces'
 import { useToastStore } from '../stores/toastStore'
 import SpinnerComponent from '../components/SpinnerComponent.vue'
 import OrdersCards from '../components/order/OrdersCards.vue'
 import TotalCount from '../components/TotalCount.vue'
 import NotFoundEntity from '../components/NotFoundEntity.vue'
 import CreateOrderModal from '../components/modals/CreateOrderModal.vue'
-import { AxiosError } from 'axios'
 import { useUserStore } from '../stores/userStore'
 import { useOrder } from '../composables/useOrder'
 import StatusFilter from '../components/order/StatusFilter.vue'
@@ -63,7 +62,6 @@ const { isProfile, id } = defineProps<{
 
 const loading = ref(false)
 const search = ref<string | OrderStatus>('')
-const creating = ref(false)
 const status = ref<null | OrderStatus>(null)
 const unSortedOrders = ref<Order[]>()
 
@@ -127,9 +125,7 @@ const searchOrders = async (srch: string) => {
 
 const createOrder = async (order: Order) => {
   try {
-    creating.value = true
-    const res = await orderHttp.post<OrderResponse<Order>>('/create-order', order)
-    unSortedOrders.value.push(res.data.order)
+    unSortedOrders.value.push(order)
     handleOrders(unSortedOrders.value)
     const elementToClick = document.querySelector('.btn-close') as HTMLElement | null
 
@@ -137,10 +133,7 @@ const createOrder = async (order: Order) => {
       elementToClick.click()
     }
   } catch (error) {
-    const e = error as AxiosError<MessageResponse>
-    toast.showToast(e.response.data.message, ToastHeader.ERROR, ToastConclusion.ERROR)
-  } finally {
-    creating.value = false
+    toast.showToast('Κάτι πήγε στραβά', ToastHeader.ERROR, ToastConclusion.ERROR)
   }
 }
 

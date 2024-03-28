@@ -152,7 +152,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { Product, User } from '../../types/interfaces'
+import { MessageResponse, Order, OrderResponse, Product, User } from '../../types/interfaces'
 import { ToastConclusion, ToastHeader } from '../../types/enums'
 import { useToastStore } from '../../stores/toastStore'
 import NotFoundEntity from './../NotFoundEntity.vue'
@@ -163,10 +163,8 @@ import { parseAndCheckNumber } from '../../utils/parseNumber'
 import { useProductStore } from '../../stores/productStore'
 import { useDoctorStore } from '../../stores/doctorStore'
 import { useOrder } from '../../composables/useOrder'
-
-let { creating } = defineProps<{
-  creating: boolean
-}>()
+import { orderHttp } from '../../services/orderHttp'
+import { AxiosError } from 'axios'
 
 const takenDate = ref('')
 const sendDate = ref('')
@@ -175,6 +173,7 @@ const docs = ref<User[]>()
 const products = ref<Product[]>()
 const selectedDoctor = ref('')
 const client = ref('')
+const creating = ref(false)
 
 const toast = useToastStore()
 const product = useProductStore()
@@ -198,18 +197,19 @@ onMounted(async () => {
 
 const createOrder = async () => {
   try {
+    creating.value = true
     if (!isValidDate(takenDate.value)) {
-      creating = false
+      creating.value = false
       return
     }
     if (!isValidDate(sendDate.value)) {
-      creating = false
+      creating.value = false
       return
     }
 
     if (parseAndCheckNumber(paid.value!?.toString()) === null) {
       toast.showToast('Το εξοφλημένο ποσό δεν είναι αριθμός!', ToastHeader.ATT, ToastConclusion.ATT)
-      creating = false
+      creating.value = false
       return
     }
 
@@ -223,14 +223,24 @@ const createOrder = async () => {
       client: client.value
     }
 
-    emit('create', order)
+    const res = await orderHttp.post<OrderResponse<Order>>('/create-order', order)
+
+    toast.showToast(res.data.message, ToastHeader.SUCCESS, ToastConclusion.SUCCESS)
+    emit('create', res.data.order)
+
     product.isFetched = false
-  } catch (e) {
-    toast.showToast(
-      'Κάτι πήγε στραβά σχετικά με την δημιουργία παραγγελίας',
-      ToastHeader.ERROR,
-      ToastConclusion.ERROR
-    )
+    takenDate.value = ''
+    sendDate.value = ''
+    description.value = ''
+    selectedDoctor.value = ''
+    productsToAdd.value = []
+    client.value = ''
+    paid.value = 0
+  } catch (error) {
+    const e = error as AxiosError<MessageResponse>
+    toast.showToast(e.response.data.message, ToastHeader.ERROR, ToastConclusion.ERROR)
+  } finally {
+    creating.value = false
   }
 }
 </script>

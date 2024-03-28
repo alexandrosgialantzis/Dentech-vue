@@ -11,7 +11,7 @@
     >
       Δημιουργεία προιόντος <i class="fa-solid fa-plus"></i>
     </button>
-    <create-product-modal :loading="creating" @create="createProduct" />
+    <create-product-modal @create="handleOnCreate" />
   </div>
   <spinner-component v-if="product.loading" :use-margin-top="true" />
   <div class="mt-1" v-if="!product.loading && products?.length">
@@ -26,24 +26,17 @@
 <script lang="ts" setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { useProductStore } from '../stores/productStore'
-import { MessageResponse, Product, ProductPayload, ProductResponse } from '../types/interfaces'
+import { Product } from '../types/interfaces'
 import SearchComponent from '../components/SearchComponent.vue'
 import SpinnerComponent from '../components/SpinnerComponent.vue'
 import TotalCount from '../components/TotalCount.vue'
 import ProductsCard from '../components/product/ProductsCard.vue'
 import NotFoundEntity from '../components/NotFoundEntity.vue'
 import CreateProductModal from '../components/modals/CreateProductModal.vue'
-import { productHttp } from '../services/productHttp'
-import { useToastStore } from '../stores/toastStore'
-import { AxiosError } from 'axios'
-import { ToastConclusion, ToastHeader } from '../types/enums'
 
 const product = useProductStore()
 
 const products = ref<null | Product[]>(null)
-const creating = ref(false)
-
-const toast = useToastStore()
 
 onMounted(async () => {
   if (!product.isFetched) {
@@ -66,24 +59,7 @@ const searchProducts = async (search: string) => {
   products.value = product.products
 }
 
-const createProduct = async (payload: ProductPayload) => {
-  try {
-    creating.value = true
-
-    const res = await productHttp.post<ProductResponse<Product>>('/create-product', payload)
-    products.value.unshift(res.data.product)
-    toast.showToast(res.data.message, ToastHeader.SUCCESS, ToastConclusion.SUCCESS)
-
-    const elementToClick = document.querySelector('.btn-close') as HTMLElement | null
-
-    if (elementToClick) {
-      elementToClick.click()
-    }
-  } catch (error) {
-    const e = error as AxiosError<MessageResponse>
-    toast.showToast(e.response.data.message, ToastHeader.ERROR, ToastConclusion.ERROR)
-  } finally {
-    creating.value = false
-  }
+const handleOnCreate = async (payload: Product) => {
+  products.value.unshift(payload)
 }
 </script>

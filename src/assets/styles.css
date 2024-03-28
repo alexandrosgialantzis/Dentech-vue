@@ -1,5 +1,5 @@
 body {
-  background: #5e5d5c22;
+  background: #efefef;
   font-family: 'Source Sans Pro', 'Arial', sans-serif !important;
   font-size: 17px;
 }
@@ -47,7 +47,7 @@ input::-webkit-inner-spin-button {
 }
 
 .navbar {
-  background-color: #155fdf6d;
+  background-color: #a3c0f3;
 }
 
 .search-bar {
@@ -88,6 +88,10 @@ input[type='radio'] {
 
 .modal-backdrop {
   z-index: 11 !important;
+}
+
+footer {
+  background: #efefef;
 }
 
 .btn-check:focus + .btn-success,

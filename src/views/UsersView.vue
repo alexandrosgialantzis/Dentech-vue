@@ -12,7 +12,7 @@
       >
         Δημιουργεία χρήστη <i class="fa-solid fa-user-plus"></i>
       </button>
-      <create-user-modal @create="createUser" :loading="creating" />
+      <create-user-modal @create="handleOnCreate" />
     </div>
     <div class="input-group justify-content-end wmax-1200 mc-1 btn-filter-group">
       <span class="d-flex align-items-center me-1">Χρήστες βάση ρόλου : </span>
@@ -66,13 +66,7 @@
 <script lang="ts" setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { userHttp } from '../services/userHttp'
-import {
-  MessageResponse,
-  User,
-  UserPayload,
-  UserResponse,
-  UsersResponse
-} from '../types/interfaces'
+import { User, UsersResponse } from '../types/interfaces'
 import SpinnerComponent from '../components/SpinnerComponent.vue'
 import { useToastStore } from '../stores/toastStore'
 import { ToastConclusion, ToastHeader } from '../types/enums'
@@ -81,7 +75,6 @@ import UsersCard from '../components/user/UsersCard.vue'
 import NotFoundEntity from '../components/NotFoundEntity.vue'
 import SearchComponent from '../components/SearchComponent.vue'
 import CreateUserModal from '../components/modals/CreateUserModal.vue'
-import { AxiosError } from 'axios'
 
 onMounted(async () => {
   await getUsers()
@@ -96,7 +89,6 @@ onBeforeUnmount(() => {
 
 const users = ref<null | User[]>(null)
 const loading = ref(false)
-const creating = ref(false)
 const selectedRole = ref('')
 
 const toast = useToastStore()
@@ -123,23 +115,8 @@ const filterByRole = async (role: string) => {
   await getUsers(role)
 }
 
-const createUser = async (user: UserPayload) => {
-  try {
-    creating.value = true
-    const res = await userHttp.post<UserResponse<User>>('/create-user', user)
-    toast.showToast(res.data.message, ToastHeader.SUCCESS, '')
-    users.value.unshift(res.data.user)
-    const elementToClick = document.querySelector('.btn-close') as HTMLElement | null
-
-    if (elementToClick) {
-      elementToClick.click()
-    }
-  } catch (e) {
-    const error = e as AxiosError<MessageResponse>
-    toast.showToast(error.response.data.message, ToastHeader.ERROR, ToastConclusion.ERROR)
-  } finally {
-    creating.value = false
-  }
+const handleOnCreate = async (user: User) => {
+  users.value.unshift(user)
 }
 </script>
 

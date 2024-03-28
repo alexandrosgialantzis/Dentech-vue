@@ -60,8 +60,10 @@
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
             Κλείσιμο
           </button>
-          <button type="button" class="btn btn-success" @click="createUser" :disabled="loading">
-            <span v-if="!loading">Δημιουργία χρήστη<i class="fa-solid fa-user-plus ms-1"></i></span>
+          <button type="button" class="btn btn-success" @click="createUser" :disabled="creating">
+            <span v-if="!creating"
+              >Δημιουργία χρήστη<i class="fa-solid fa-user-plus ms-1"></i
+            ></span>
             <button-content v-else />
           </button>
         </div>
@@ -72,14 +74,17 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { Roles } from '../../types/enums'
-import { UserPayload } from '../../types/interfaces'
+import { Roles, ToastConclusion, ToastHeader } from '../../types/enums'
+import { MessageResponse, User, UserPayload, UserResponse } from '../../types/interfaces'
 import ButtonContent from '../ButtonContent.vue'
 import { useDoctorStore } from '../../stores/doctorStore'
+import { userHttp } from '../../services/userHttp'
+import { AxiosError } from 'axios'
+import { useToastStore } from '../../stores/toastStore'
 
-defineProps<{ loading: boolean }>()
 const emit = defineEmits(['create'])
 
+const toast = useToastStore()
 const doctors = useDoctorStore()
 
 const fullName = ref('')
@@ -88,32 +93,49 @@ const cellPhone = ref<null | number>(null)
 const email = ref('')
 const role = ref(Roles.UNCATEGORIZED)
 const password = ref('')
+const creating = ref(false)
 
 const onChange = (event: Event) => {
   const target = event.target as HTMLSelectElement
   role.value = target.value as Roles
 }
 
-const createUser = () => {
-  const payload: UserPayload = {
-    fullName: fullName.value,
-    email: email.value,
-    role: role.value,
-    password: password.value
-  }
+const createUser = async () => {
+  try {
+    creating.value = true
+    const payload: UserPayload = {
+      fullName: fullName.value,
+      email: email.value,
+      role: role.value,
+      password: password.value
+    }
 
-  if (telephone.value) {
-    payload.telephone = telephone.value
-  }
+    if (telephone.value) {
+      payload.telephone = telephone.value
+    }
 
-  if (cellPhone.value) {
-    payload.cellPhone = cellPhone.value
-  }
+    if (cellPhone.value) {
+      payload.cellPhone = cellPhone.value
+    }
 
-  if (role.value === Roles.DENTIST) {
-    doctors.isFetched = false
-  }
+    if (role.value === Roles.DENTIST) {
+      doctors.isFetched = false
+    }
 
-  emit('create', payload)
+    const res = await userHttp.post<UserResponse<User>>('/create-user', payload)
+    emit('create', res.data.user)
+    toast.showToast(res.data.message, ToastHeader.SUCCESS, '')
+
+    fullName.value = ''
+    email.value = ''
+    password.value = ''
+    cellPhone.value = null
+    telephone.value = null
+  } catch (e) {
+    const error = e as AxiosError<MessageResponse>
+    toast.showToast(error.response.data.message, ToastHeader.ERROR, ToastConclusion.ERROR)
+  } finally {
+    creating.value = false
+  }
 }
 </script>

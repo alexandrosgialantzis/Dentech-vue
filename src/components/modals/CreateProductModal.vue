@@ -38,8 +38,8 @@
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
             Κλείσιμο
           </button>
-          <button type="button" class="btn btn-success" @click="createProduct" :disabled="loading">
-            <span v-if="!loading">Δημιουργία προιόντος<i class="fa-solid fa-plus ms-1"></i></span>
+          <button type="button" class="btn btn-success" @click="createProduct" :disabled="creating">
+            <span v-if="!creating">Δημιουργία προιόντος<i class="fa-solid fa-plus ms-1"></i></span>
             <button-content v-else />
           </button>
         </div>
@@ -51,29 +51,48 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import ButtonContent from '../ButtonContent.vue'
-import { ProductPayload } from '../../types/interfaces'
+import { MessageResponse, Product, ProductPayload, ProductResponse } from '../../types/interfaces'
 import { parseAndCheckNumber } from '../../utils/parseNumber'
 import { useToastStore } from '../../stores/toastStore'
-import { ToastHeader } from '../../types/enums'
+import { ToastConclusion, ToastHeader } from '../../types/enums'
+import { productHttp } from '../../services/productHttp'
+import { AxiosError } from 'axios'
 
 const toast = useToastStore()
 
-defineProps<{ loading: boolean }>()
-
 const emit = defineEmits(['create'])
 
+const creating = ref(false)
 const price = ref('')
 const name = ref('')
 
-const createProduct = () => {
-  const pr = parseAndCheckNumber(price.value)
-  if (pr !== null) {
-    const payload: ProductPayload = {
-      name: name.value,
-      price: pr
-    }
+const createProduct = async () => {
+  const validPrice = parseAndCheckNumber(price.value)
+  if (validPrice !== null) {
+    try {
+      creating.value = true
+      const payload: ProductPayload = {
+        name: name.value,
+        price: validPrice
+      }
 
-    emit('create', payload)
+      const res = await productHttp.post<ProductResponse<Product>>('/create-product', payload)
+      emit('create', res.data.product)
+      toast.showToast(res.data.message, ToastHeader.SUCCESS, ToastConclusion.SUCCESS)
+
+      const elementToClick = document.querySelector('.btn-close') as HTMLElement | null
+      if (elementToClick) {
+        elementToClick.click()
+      }
+
+      name.value = ''
+      price.value = ''
+    } catch (error) {
+      const e = error as AxiosError<MessageResponse>
+      toast.showToast(e.response.data.message, ToastHeader.ERROR, ToastConclusion.ERROR)
+    } finally {
+      creating.value = false
+    }
   } else {
     toast.showToast('Η τιμή πρέπει να είναι αριθμός!', ToastHeader.ATT, ToastHeader.ATT)
   }
