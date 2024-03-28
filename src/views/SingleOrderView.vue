@@ -66,7 +66,7 @@ const toast = useToastStore()
 const product = useProductStore()
 
 const { user } = useUserStore()
-const { deleteOrder, pay, paying } = useOrder()
+const { pay, paying } = useOrder()
 
 onMounted(async () => {
   orderId.value = route.params.id as string
@@ -102,10 +102,11 @@ const getSingleOrder = async (id: string) => {
 const handleDelete = async () => {
   deleting.value = true
   try {
-    await deleteOrder(orderId.value)
+    const res = await orderHttp.delete<OrderResponse<Order>>(`/${orderId.value}/delete-order`)
+    toast.showToast(res.data.message, ToastHeader.SUCCESS, ToastConclusion.SUCCESS)
     router.push('/orders')
   } catch (error) {
-    console.error('Κάτι πήγε λάθος σχετικά με τη διαγραφή')
+    toast.showToast('Κάτι πήγε στραβά', ToastHeader.ERROR, ToastConclusion.ERROR)
   } finally {
     deleting.value = false
   }

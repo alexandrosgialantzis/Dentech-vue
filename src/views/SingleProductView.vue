@@ -30,14 +30,11 @@ import NotFoundEntity from '../components/NotFoundEntity.vue'
 import ProductGeneral from '../components/product/ProductGeneral.vue'
 import ProductOrders from '../components/product/ProductOrders.vue'
 import DeleteComponent from '../components/DeleteComponent.vue'
-import { useProduct } from '../composables/useProduct'
 import ProductUpdate from '../components/product/ProductUpdate.vue'
 import { useProductStore } from '../stores/productStore'
 
 const route = useRoute()
 const router = useRouter()
-
-const { deleteProduct } = useProduct()
 
 const product = ref<null | Product>(null)
 const loading = ref(false)
@@ -69,7 +66,10 @@ const getProduct = async () => {
 const handleDelete = async () => {
   deleting.value = true
   try {
-    await deleteProduct(productId.value)
+    const res = await productHttp.delete<ProductResponse<Product>>(
+      `/${productId.value}/delete-product`
+    )
+    toast.showToast(res.data.message, ToastHeader.SUCCESS, ToastConclusion.SUCCESS)
     router.push('/products')
     productStore.isFetched = false
   } catch (error) {
