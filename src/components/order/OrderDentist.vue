@@ -49,7 +49,7 @@ import { User } from '../../types/interfaces'
 import NotFoundEntity from '../NotFoundEntity.vue'
 
 defineProps<{
-  dentist: User
+  dentist: User | null
   id: string
 }>()
 </script>

@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref } from 'vue'
 import { orderHttp } from '../services/orderHttp'
 import { Order, OrderResponse, Product } from '../types/interfaces'
 import { useRoute, useRouter } from 'vue-router'
@@ -113,6 +113,7 @@ const handleDelete = async () => {
 
 const handleOrderUpdated = (updatedOrder: Order) => {
   order.value = updatedOrder
+  updateCounter.value++
 }
 
 const handleRepayment = async () => {
@@ -120,6 +121,4 @@ const handleRepayment = async () => {
   order.value = newOrder
   updateCounter.value++
 }
-
-watch(order, () => {}, { deep: true })
 </script>

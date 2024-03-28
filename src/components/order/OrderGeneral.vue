@@ -64,7 +64,7 @@
         </p>
         <p class="text-muted m-1">
           Ασθενής:
-          <span class="text-dark">{{ order?.client }}</span>
+          <span class="text-dark">{{ order?.client || '--' }}</span>
         </p>
         <p class="mb-0 w-100 text-muted m-1">
           Περιγραφή:

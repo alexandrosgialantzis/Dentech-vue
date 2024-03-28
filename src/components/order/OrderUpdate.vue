@@ -12,10 +12,16 @@
               >Ημ/νία παραλαβής: <span class="text-danger fs-6">*</span></label
             >
             <input type="text" class="form-control" v-model="takenDateToString" />
+            <p class="form-text mb-0">
+              <span class="text-danger fs-6"></span>Διαμόρφωση ηη/μμ/εεεε.
+            </p>
           </div>
           <div class="col-md-3">
             <label class="form-label">Ημ/νία αποστολής:</label>
             <input type="text" class="form-control" v-model="sendDateToString" />
+            <p class="form-text mb-0">
+              <span class="text-danger fs-6"></span>Διαμόρφωση ηη/μμ/εεεε.
+            </p>
           </div>
           <div class="col-md-3">
             <label class="form-label">Εξοφλημένο ποσό: </label>
@@ -85,7 +91,7 @@
             <not-found-entity :message="'Δεν βρέθηκαν προιόντα'" />
           </div>
           <div class="col-12">
-            <label class="form-label">Οδοντίατροι:</label>
+            <label class="form-label">Οδοντίατροι: <span class="text-danger fs-6">*</span></label>
             <div class="w-100">
               <div class="radio-check-wrapper" v-for="doc in docs" :key="doc?._id">
                 <div class="form-check-inline form-check mb-0 mx-0">
@@ -106,6 +112,7 @@
             <label class="form-label">Περιγραφή</label>
             <textarea class="form-control" rows="3" v-model="localOrder.description"></textarea>
           </div>
+          <p class="form-text mb-0"><span class="text-danger fs-6">*</span> Αναγκαία πεδία.</p>
           <div class="col-12">
             <button class="btn btn-update" :disabled="updating" @click="updateOrder">
               <button-content v-if="updating" />
@@ -217,6 +224,17 @@ const remove = (id: string) => {
 
 const updateOrder = async () => {
   try {
+    if (productsToRemove.value.length && !productsToAdd.value.length) {
+      toast.showToast('Προσθέστε προιόντα', ToastHeader.ERROR, ToastConclusion.ERROR)
+      productsToAdd.value = order.products.map((p) => {
+        return { id: (p.id as Product)._id, amount: p.amount }
+      })
+      totalCost.value = order.totalCost
+      paidToString.value = order.paid!?.toString() ?? '0'
+      unPaid.value = order.unPaid
+      return
+    }
+
     updating.value = true
     if (takenDateToString.value) {
       if (!isValidDateFormat(takenDateToString.value)) {
@@ -255,18 +273,13 @@ const updateOrder = async () => {
       `/${order._id}/update-order`,
       updateData
     )
-    emit('order-updated', res.data.order)
+
     toast.showToast(res.data.message, ToastHeader.SUCCESS, ToastConclusion.SUCCESS)
-    productsToAdd.value = res.data.order.products.map((p) => {
-      return { id: (p.id as Product)._id, amount: p.amount }
-    })
     product.isFetched = false
+    emit('order-updated', res.data.order)
   } catch (e) {
     const error = e as AxiosError<MessageResponse>
     toast.showToast(error.response.data.message, ToastHeader.ERROR, ToastConclusion.ERROR)
-    productsToAdd.value = order.products.map((p) => {
-      return { id: (p.id as Product)._id, amount: p.amount }
-    })
   } finally {
     updating.value = false
     productsToRemove.value = []

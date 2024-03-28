@@ -28,10 +28,16 @@
                 >Ημ/νία παραλαβής: <span class="text-danger fs-6">*</span></label
               >
               <input type="text" class="form-control" v-model="takenDate" />
+              <p class="form-text mb-0">
+                <span class="text-danger fs-6"></span>Διαμόρφωση ηη/μμ/εεεε.
+              </p>
             </div>
             <div class="col-md-3">
               <label class="form-label">Ημ/νία αποστολής:</label>
               <input type="text" class="form-control" v-model="sendDate" />
+              <p class="form-text mb-0">
+                <span class="text-danger fs-6"></span>Διαμόρφωση ηη/μμ/εεεε.
+              </p>
             </div>
             <div class="col-md-3">
               <label class="form-label">Εξοφλημένο ποσό: </label>
@@ -146,16 +152,17 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { Product, User, ProductsOnOrder } from '../../types/interfaces'
+import { Product, User } from '../../types/interfaces'
 import { ToastConclusion, ToastHeader } from '../../types/enums'
 import { useToastStore } from '../../stores/toastStore'
 import NotFoundEntity from './../NotFoundEntity.vue'
 import SpinnerComponent from './../SpinnerComponent.vue'
-import { isValidDateFormat, parseDate } from '../../utils/date'
+import { parseDate } from '../../utils/date'
 import ButtonContent from './../ButtonContent.vue'
 import { parseAndCheckNumber } from '../../utils/parseNumber'
 import { useProductStore } from '../../stores/productStore'
 import { useDoctorStore } from '../../stores/doctorStore'
+import { useOrder } from '../../composables/useOrder'
 
 let { creating } = defineProps<{
   creating: boolean
@@ -164,19 +171,17 @@ let { creating } = defineProps<{
 const takenDate = ref('')
 const sendDate = ref('')
 const description = ref('')
-const paid = ref(0)
 const docs = ref<User[]>()
 const products = ref<Product[]>()
 const selectedDoctor = ref('')
-const productsToAdd = ref<ProductsOnOrder[]>([])
-const productsToAddIds = ref([])
-const unPaid = ref(0)
-const totalCost = ref(0)
 const client = ref('')
 
 const toast = useToastStore()
 const product = useProductStore()
 const doctors = useDoctorStore()
+
+const { isValidDate, productsToAdd, totalCost, paid, unPaid, remove, add, handleUnPaid } =
+  useOrder()
 
 const emit = defineEmits(['create'])
 
@@ -191,67 +196,15 @@ onMounted(async () => {
   docs.value = doctors.getDocs
 })
 
-const add = (id: string) => {
-  const prod = product.products.find((prod) => prod._id === id)
-  const i = productsToAdd.value.findIndex((prod) => prod.id === id)
-
-  if (i !== -1) {
-    const updatedProduct = {
-      ...productsToAdd.value[i],
-      amount: productsToAdd.value[i].amount + 1
-    }
-    productsToAdd.value = [
-      ...productsToAdd.value.slice(0, i),
-      updatedProduct,
-      ...productsToAdd.value.slice(i + 1)
-    ]
-  } else {
-    productsToAdd.value.push({ id, amount: 1 } as ProductsOnOrder)
-    productsToAddIds.value.push(id)
-    totalCost.value += prod.price
-    handleUnPaid()
-    return
-  }
-
-  totalCost.value += prod.price
-  handleUnPaid()
-}
-
-const remove = (id: string) => {
-  const i = productsToAdd.value.findIndex((prod) => prod.id === id)
-  productsToAdd.value[i].amount -= 1
-
-  const prod = product.products.find((prod) => prod._id === id)
-
-  totalCost.value -= prod.price
-  handleUnPaid()
-
-  if (productsToAdd.value[i].amount <= 0) {
-    productsToAdd.value.splice(i, 1)
-    productsToAddIds.value = productsToAddIds.value.filter((prodId) => prodId !== id)
-  }
-}
-
-const handleUnPaid = () => {
-  unPaid.value = totalCost.value - paid.value
-}
-
 const createOrder = async () => {
   try {
-    if (takenDate.value) {
-      if (!isValidDateFormat(takenDate.value)) {
-        toast.showToast('Λάθος διαμόρφωση ημερομηνίας!', ToastHeader.ATT, ToastConclusion.ATT)
-        creating = false
-        return
-      }
+    if (!isValidDate(takenDate.value)) {
+      creating = false
+      return
     }
-
-    if (sendDate.value) {
-      if (!isValidDateFormat(sendDate.value)) {
-        toast.showToast('Λάθος διαμόρφωση ημερομηνίας!', ToastHeader.ATT, ToastConclusion.ATT)
-        creating = false
-        return
-      }
+    if (!isValidDate(sendDate.value)) {
+      creating = false
+      return
     }
 
     if (parseAndCheckNumber(paid.value!?.toString()) === null) {

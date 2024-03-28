@@ -19,7 +19,7 @@ import ButtonContent from './ButtonContent.vue'
 defineProps<{
   paying: boolean
   total: number
-  paid: number
+  paid: number | null
   content?: string
 }>()
 

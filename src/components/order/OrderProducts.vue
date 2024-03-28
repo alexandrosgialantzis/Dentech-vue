@@ -15,30 +15,18 @@
         <div
           v-for="(prod, index) in products"
           :key="index"
-          :class="[
-            'p-1 m-1 border border-2 rounded cw shadow bg-white d-flex flex-wrap justify-content-center align-items-between',
-            `${products?.length < 2 ? 'w-100' : ''}`
-          ]"
+          class="p-1 m-1 border border-2 rounded cw shadow bg-white d-flex flex-wrap justify-content-center align-items-between w-100"
         >
-          <div v-if="(prod.id as Product)!?._id">
-            <p :class="[role === Roles.ADMIN ? 'mb-1' : 'mb-0', 'text-center', 'text-muted']">
-              Ονομα:
-              <span class="text-dark text-capitalize w-100">{{
-                (prod?.id as Product)!?.name
-              }}</span>
-              <span class="text-dark text-capitalize w-100 ms-1">x{{ prod.amount }}</span>
-            </p>
-            <router-link
-              :to="`/product/${(prod?.id as Product)!?._id}`"
-              class="text-center w-100 d-block"
-              v-if="role === Roles.ADMIN"
-              >Δείτε το προιόν</router-link
-            >
-          </div>
-          <span
-            class="badge rounded-pill bg-danger badge-link m1 fs-6 text-capitalize fw-normal"
-            v-else
-            >Διαγραμένο προιόν</span
+          <p :class="[role === Roles.ADMIN ? 'mb-1' : 'mb-0', 'text-center', 'text-muted']">
+            Ονομα:
+            <span class="text-dark text-capitalize w-100">{{ (prod?.id as Product)!?.name }}</span>
+            <span class="text-dark text-capitalize w-100 ms-1">x{{ prod.amount }}</span>
+          </p>
+          <router-link
+            :to="`/product/${(prod?.id as Product)!?._id}`"
+            class="text-center w-100 d-block"
+            v-if="role === Roles.ADMIN"
+            >Δείτε το προιόν</router-link
           >
         </div>
       </div>
@@ -58,34 +46,3 @@ defineProps<{
   role: Roles
 }>()
 </script>
-
-<style scoped>
-.cw {
-  background: #91919117;
-  width: 48%;
-}
-
-@media (max-width: 1290px) {
-  .cw {
-    width: 100%;
-  }
-}
-
-@media (max-width: 1010px) {
-  .cw {
-    width: 30%;
-  }
-}
-
-@media (max-width: 700px) {
-  .cw {
-    width: 45%;
-  }
-}
-
-@media (max-width: 500px) {
-  .cw {
-    width: 100%;
-  }
-}
-</style>

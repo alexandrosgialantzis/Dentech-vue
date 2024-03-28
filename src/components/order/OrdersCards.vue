@@ -74,36 +74,32 @@
                     <span class="text-dark">{{ order.unPaid.toFixed(2) }}€</span>
                   </li>
                   <li class="list-group-item">
-                    <p class="text-muted mb-0">
+                    <span class="text-muted mb-0">
                       Προιόντα:
                       <span
                         class="text-primary"
                         v-for="product in order?.products"
                         :key="(product.id as Product)!?._id"
                       >
-                        <div v-if="(product.id as Product)!?._id">
-                          <router-link
-                            v-if="role === Roles.ADMIN"
-                            :to="`/product/${(product.id as Product)!?._id}`"
-                            class="badge bg-primary badge-link me-1 mt-1 fs-6 fw-normal prod-link"
-                            ><span class="text-capitalize">{{
-                              (product.id as Product)!?.name
-                            }}</span>
-                            x{{ product.amount }}</router-link
-                          >
-                          <span
-                            class="badge rounded-pill bg-primary badge-link me-1 mt-1 fs-6 text-capitalize fw-normal"
-                            v-else
-                            >{{ product.name }}</span
-                          >
-                        </div>
+                        <router-link
+                          v-if="role === Roles.ADMIN"
+                          :to="`/product/${(product.id as Product)!?._id}`"
+                          class="badge bg-primary badge-link me-1 mt-1 fs-6 fw-normal prod-link"
+                          ><span class="text-capitalize">{{ (product.id as Product)!?.name }}</span>
+                          x{{ product.amount }}</router-link
+                        >
                         <span
-                          class="badge rounded-pill bg-danger badge-link mt-1 me-1 fs-6 text-capitalize fw-normal"
+                          class="badge rounded-pill bg-primary badge-link me-1 mt-1 fs-6 text-capitalize fw-normal"
                           v-else
-                          >Διαγραμένο προιόν</span
+                          >{{ product.name }}</span
                         >
                       </span>
-                    </p>
+                      <span
+                        class="dadge bg-danger p-1 text-light rounded"
+                        v-if="!order.products.length"
+                        >Δεν βρέθηκαν προιόντα</span
+                      >
+                    </span>
                   </li>
                   <li class="list-group-item text-muted">
                     Κατάσταση:
@@ -128,7 +124,7 @@
                     <not-found-entity message="Δεν βρέθηκε οδοντίατρος!" v-else />
                   </li>
                   <li class="list-group-item text-muted">
-                    Ασθενής: <span class="text-dark">{{ order.client ?? '--' }}</span>
+                    Ασθενής: <span class="text-dark">{{ order.client || '--' }}</span>
                   </li>
                 </ul>
                 <div class="card-footer d-flex justify-content-between align-items-center">
