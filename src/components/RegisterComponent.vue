@@ -13,7 +13,7 @@
     </div>
     <div class="mb-3">
       <label for="password" class="form-label"
-        >Κωδίκος <span class="text-danger fs-6">*</span></label
+        >Κωδικός <span class="text-danger fs-6">*</span></label
       >
       <input type="password" class="form-control" id="password" v-model="password" />
     </div>
