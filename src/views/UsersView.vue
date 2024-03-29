@@ -17,7 +17,7 @@
     <div class="input-group justify-content-end wmax-1200 mc-1 btn-filter-group">
       <div class="flex-wrap">
         <button
-          :class="['btn me-2', `btn${!selectedRole ? '' : '-outline'}-secondary`]"
+          :class="['btn me-1', `btn${!selectedRole ? '' : '-outline'}-secondary`]"
           @click="filterByRole('')"
           :disabled="!selectedRole"
         >
@@ -31,7 +31,7 @@
           Οδοντίατροι <i class="fa-solid fa-stethoscope"></i>
         </button>
         <button
-          :class="['btn mx-2', `btn${selectedRole === 'user' ? '' : '-outline'}-secondary`]"
+          :class="['btn mx-1', `btn${selectedRole === 'user' ? '' : '-outline'}-secondary`]"
           @click="filterByRole('user')"
           :disabled="selectedRole === 'user'"
         >

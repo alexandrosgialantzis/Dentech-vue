@@ -6,7 +6,7 @@
           Όλες
         </button>
         <button
-          class="btn btn-outline-secondary mx-2"
+          class="btn btn-outline-secondary mx-1"
           @click="handleChange(OrderStatus.NOT_SEND)"
           :disabled="status === OrderStatus.NOT_SEND"
         >
