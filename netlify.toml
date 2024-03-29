@@ -4,7 +4,6 @@
   status = 200
   force = true
   
-# Handle SPA routing
 [[redirects]]
   from = "/*"
   to = "/index.html"
