@@ -1,13 +1,12 @@
 <template>
   <div class="input-group justify-content-end flex-column wmax-1200 mc-1 btn-filter-group">
     <div class="d-inline-flex justify-content-end flex-wrap filter">
-      <span class="d-flex align-items-center me-1">Ταξινόμηση βάση κατάστασης: </span>
-      <div class="btn-group flex-wrap">
+      <div class="flex-wrap">
         <button class="btn btn-outline-secondary" @click="handleChange()" :disabled="!status">
           Όλες
         </button>
         <button
-          class="btn btn-outline-secondary"
+          class="btn btn-outline-secondary mx-2"
           @click="handleChange(OrderStatus.NOT_SEND)"
           :disabled="status === OrderStatus.NOT_SEND"
         >

@@ -23,14 +23,12 @@
           <div class="d-flex flex-wrap">
             <total-count
               :length="orders?.groupedOrders[month].length"
-              :content="'Παραγγελίες'"
-              :entity="'σύνολο'"
+              :entity="'παραγγελίες'"
               class="border rounded p-1 shadow me-2 mt-custom"
             />
             <total-count
               :length="getPaidByMonth(month).value"
-              :content="'Συνολικό εξοφλημένο πόσο'"
-              :entity="'€'"
+              :entity="'€ (συνολικό εξοφλημένο πόσο)'"
               class="border rounded p-1 shadow"
             />
           </div>

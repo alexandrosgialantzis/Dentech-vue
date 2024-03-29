@@ -15,7 +15,7 @@
   </div>
   <spinner-component v-if="product.loading" :use-margin-top="true" />
   <div class="mt-1" v-if="!product.loading && products?.length">
-    <total-count :length="products?.length" :entity="'Προιόντα'" />
+    <total-count :length="products?.length" :entity="'προιόντα'" />
     <products-card :products="products" />
   </div>
   <not-found-entity

@@ -15,8 +15,14 @@
       <create-user-modal @create="handleOnCreate" />
     </div>
     <div class="input-group justify-content-end wmax-1200 mc-1 btn-filter-group">
-      <span class="d-flex align-items-center me-1">Χρήστες βάση ρόλου : </span>
-      <div class="btn-group flex-wrap">
+      <div class="flex-wrap">
+        <button
+          :class="['btn me-2', `btn${!selectedRole ? '' : '-outline'}-secondary`]"
+          @click="filterByRole('')"
+          :disabled="!selectedRole"
+        >
+          Όλοι <i class="fa-solid fa-users ms-1"></i>
+        </button>
         <button
           :class="['btn', `btn${selectedRole === 'dentist' ? '' : '-outline'}-secondary`]"
           @click="filterByRole('dentist')"
@@ -25,7 +31,7 @@
           Οδοντίατροι <i class="fa-solid fa-stethoscope"></i>
         </button>
         <button
-          :class="['btn', `btn${selectedRole === 'user' ? '' : '-outline'}-secondary`]"
+          :class="['btn mx-2', `btn${selectedRole === 'user' ? '' : '-outline'}-secondary`]"
           @click="filterByRole('user')"
           :disabled="selectedRole === 'user'"
         >
@@ -37,13 +43,6 @@
           :disabled="selectedRole === 'admin'"
         >
           Διαχειριστές <i class="fa-solid fa-crown ms-1"></i>
-        </button>
-        <button
-          :class="['btn', `btn${!selectedRole ? '' : '-outline'}-secondary`]"
-          @click="filterByRole('')"
-          :disabled="!selectedRole"
-        >
-          Όλοι <i class="fa-solid fa-users ms-1"></i>
         </button>
       </div>
     </div>
