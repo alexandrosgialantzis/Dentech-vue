@@ -14,7 +14,7 @@
       </button>
       <delete-modal
         @delete="handleDelete"
-        :content="'Σίγουρα θέλετε να διαγράψετε το παραγγελία σας;'"
+        :content="'Σίγουρα θέλετε να διαγράψετε τη παραγγελία;'"
         :deleting="deleting"
       />
       <repayment-comp
