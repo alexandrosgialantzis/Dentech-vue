@@ -1,14 +1,10 @@
-import axios, { AxiosInstance } from 'axios'
+import axios from 'axios'
 
-let API_URL: string
+const API_URL: string = import.meta.env.VITE_API_URL
+  ? import.meta.env.VITE_API_URL + 'product'
+  : 'https://dentech-api.onrender.com/api/v1/product'
 
-if (import.meta.env.VITE_API_URL) {
-  API_URL = import.meta.env.VITE_API_URL + 'product'
-} else {
-  API_URL = 'https://dentech-api.onrender.com/api/v1/product'
-}
-
-export const productHttp: AxiosInstance = axios.create({
+export const productHttp = axios.create({
   baseURL: API_URL,
   withCredentials: true
 })
