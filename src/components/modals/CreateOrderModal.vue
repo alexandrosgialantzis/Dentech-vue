@@ -236,6 +236,8 @@ const createOrder = async () => {
     productsToAdd.value = []
     client.value = ''
     paid.value = 0
+    totalCost.value = 0
+    unPaid.value = 0
   } catch (error) {
     const e = error as AxiosError<MessageResponse>
     toast.showToast(e.response.data.message, ToastHeader.ERROR, ToastConclusion.ERROR)
