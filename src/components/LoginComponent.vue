@@ -52,6 +52,7 @@ const login = async () => {
     const res = await authHttp.post<UserResponse<CurrentUser>>('/login', payload)
     toast.showToast(res.data.message, ToastHeader.SUCCESS, '')
     userStore.setUser(res.data.user)
+    localStorage.setItem('token', res.data.token)
     router.push('/')
   } catch (e) {
     const error = e as AxiosError<MessageResponse>

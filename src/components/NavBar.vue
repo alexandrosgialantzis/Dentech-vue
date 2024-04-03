@@ -125,6 +125,8 @@ const logout = async () => {
     const res = await authHttp.get<MessageResponse>('/logout')
     toast.showToast(res.data.message, ToastHeader.SUCCESS, '')
     userStore.logout()
+    localStorage.removeItem('token')
+
     router.push('/auth')
   } catch (e) {
     const error = e as AxiosError<MessageResponse>

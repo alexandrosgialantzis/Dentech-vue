@@ -44,6 +44,7 @@ export interface MessageResponse {
 
 export interface UserResponse<T> extends MessageResponse {
   user: T
+  token: string
 }
 
 export interface TotalCount {

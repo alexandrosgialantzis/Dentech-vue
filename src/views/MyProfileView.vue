@@ -49,6 +49,8 @@ const update = async (payload: CurrentUser) => {
     )
     userStore.setUser(res.data.user)
     products.isFetched = false
+    localStorage.removeItem('token')
+    localStorage.setItem('token', res.data.token)
     toast.showToast(res.data.message, ToastHeader.SUCCESS)
   } catch (error) {
     const e = error as AxiosError<MessageResponse>
