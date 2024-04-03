@@ -2,18 +2,22 @@
   <div class="input-group justify-content-end flex-column wmax-1200 mc-1 btn-filter-group">
     <div class="d-inline-flex justify-content-end flex-wrap filter">
       <div class="flex-wrap">
-        <button class="btn btn-outline-secondary" @click="handleChange()" :disabled="!status">
+        <button
+          class="btn btn-outline-secondary mb-1 me-1"
+          @click="handleChange()"
+          :disabled="!status"
+        >
           Όλες
         </button>
         <button
-          class="btn btn-outline-secondary mx-1"
+          class="btn btn-outline-secondary mb-1 me-1"
           @click="handleChange(OrderStatus.NOT_SEND)"
           :disabled="status === OrderStatus.NOT_SEND"
         >
           Μη απεσταλμένες <i class="fa-solid fa-x ms-1 text-danger"></i>
         </button>
         <button
-          class="btn btn-outline-secondary"
+          class="btn btn-outline-secondary mb-1"
           @click="handleChange(OrderStatus.SEND)"
           :disabled="status === OrderStatus.SEND"
         >

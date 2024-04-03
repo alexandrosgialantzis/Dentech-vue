@@ -17,28 +17,28 @@
     <div class="input-group justify-content-end wmax-1200 mc-1 btn-filter-group">
       <div class="flex-wrap">
         <button
-          :class="['btn me-1', `btn${!selectedRole ? '' : '-outline'}-secondary`]"
+          :class="['btn mb-1 me-1', `btn${!selectedRole ? '' : '-outline'}-secondary`]"
           @click="filterByRole('')"
           :disabled="!selectedRole"
         >
           Όλοι <i class="fa-solid fa-users ms-1"></i>
         </button>
         <button
-          :class="['btn', `btn${selectedRole === 'dentist' ? '' : '-outline'}-secondary`]"
+          :class="['btn mb-1 me-1', `btn${selectedRole === 'dentist' ? '' : '-outline'}-secondary`]"
           @click="filterByRole('dentist')"
           :disabled="selectedRole === 'dentist'"
         >
           Οδοντίατροι <i class="fa-solid fa-stethoscope"></i>
         </button>
         <button
-          :class="['btn mx-1', `btn${selectedRole === 'user' ? '' : '-outline'}-secondary`]"
+          :class="['btn mb-1 me-1', `btn${selectedRole === 'user' ? '' : '-outline'}-secondary`]"
           @click="filterByRole('user')"
           :disabled="selectedRole === 'user'"
         >
           Απλοί χρήστες <i class="fa-solid fa-user ms-1"></i>
         </button>
         <button
-          :class="['btn', `btn${selectedRole === 'admin' ? '' : '-outline'}-secondary`]"
+          :class="['btn mb-1 me-1', `btn${selectedRole === 'admin' ? '' : '-outline'}-secondary`]"
           @click="filterByRole('admin')"
           :disabled="selectedRole === 'admin'"
         >
