@@ -21,6 +21,7 @@ export const useUserStore = defineStore('userStore', {
       this.user = userData
     },
     logout() {
+      localStorage.clear()
       this.user = {
         userId: null,
         fullName: null,
